@@ -94,6 +94,13 @@ def main(url: str, out: str) -> int:
         print("countries:", rows.count(), "|", rows.first.inner_text().replace("\t", " · "), "|",
               page.inner_text("#country-table tfoot").replace("\t", " · "))
         page.screenshot(path=f"{out}/8_countries.png")
+        # a country's profile: its figures, then how far to trust them there
+        rows.first.click()
+        page.wait_for_selector("#country-profile .agree-row", timeout=20000)
+        print("profile:", page.inner_text("#country-profile h2"), "|", page.inner_text("#country-profile .headline"))
+        print("     ", page.locator("#country-profile .dv-row").count() - 2, "rows by type of coast and shore;",
+              page.locator("#country-profile .agree").count(), "products compared")
+        page.screenshot(path=f"{out}/8b_profile.png")
         page.keyboard.press("Escape")
         page.evaluate("window.ceva.setFilters({ change: 'all', sig: false })")
 

@@ -118,9 +118,12 @@
   <!-- summary by country -->
   <dialog id="countries" class="wide">
     <form method="dialog"><button class="ghost close" aria-label="Close">×</button></form>
-    <h2 data-i18n="byCountry">Summary by country</h2>
-    <p class="note" id="countries-intro"></p>
-    <div class="table-wrap"><table id="country-table" class="country-table"></table></div>
+    <div id="countries-list">
+      <h2 data-i18n="byCountry">Summary by country</h2>
+      <p class="note" id="countries-intro"></p>
+      <div class="table-wrap"><table id="country-table" class="country-table"></table></div>
+    </div>
+    <div id="country-profile" class="profile" hidden></div>
   </dialog>
 
   <!-- how to read this / about -->

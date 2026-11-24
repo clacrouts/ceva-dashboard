@@ -1,6 +1,7 @@
 // CEVA dashboard: a static map of shoreline change read from precomputed files (data/), no server.
 import { countryName, direction, fillLanguagePicker, initialLanguage, keepLanguage, loadText, locale } from "./languages.js";
 import { ImageArchive, ImageViewer, LINE_COLOURS } from "./viewer.js";
+import { renderProfile } from "./country.js";
 
 const DATA = new URL("data/", document.baseURI).href;
 const BASEMAP = "https://tiles.openfreemap.org/styles/positron";
@@ -37,7 +38,7 @@ const COASTS = ["dune", "sediment_plain", "wetland", "inlet", "moderately_sloped
   "engineered_structures"];
 
 const state = { lang: initialLanguage(), text: null, mode: "cls", manifest: null, summary: null, stats: null,
-  archive: null, viewer: null, imagesOpen: false,
+  archive: null, viewer: null, imagesOpen: false, profile: null, validation: null,
   series: new Map(), refs: new Map(), selected: null, filters: { ...NO_FILTERS }, sort: { key: "name", dir: 1 } };
 const $ = (id) => document.getElementById(id);
 const t = () => state.text;
@@ -363,6 +364,9 @@ const COUNTRY_COLUMNS = ["name", "km", "n", "ero", "acc", "median", "bar"];
 
 function renderCountries() {
   const text = t();
+  $("countries-list").hidden = Boolean(state.profile);
+  $("country-profile").hidden = !state.profile;
+  if (state.profile) { showProfile(); return; }
   $("countries-intro").textContent = text.countryIntro + (activeFilters() > (state.filters.cc === "all" ? 0 : 1)
     ? ` ${text.countryFiltered}` : "");
   const { rows, total } = countryRows();
@@ -410,7 +414,7 @@ function renderCountries() {
     const tr = line(r);
     tr.tabIndex = 0;
     tr.classList.toggle("chosen", r.code === state.filters.cc);
-    const choose = () => { $("countries").close(); setFilters({ cc: r.code }, true); };
+    const choose = () => { state.profile = r.code; renderCountries(); $("countries").scrollTop = 0; };
     tr.addEventListener("click", choose);
     tr.addEventListener("keydown", (event) => { if (event.key === "Enter") choose(); });
     tbody.append(tr);
@@ -428,7 +432,31 @@ $("f-shore").addEventListener("change", (event) => setFilters({ shore: event.tar
 $("f-prec").addEventListener("change", (event) => setFilters({ prec: event.target.value }));
 $("f-sig").addEventListener("change", (event) => setFilters({ sig: event.target.checked }));
 $("f-reset").addEventListener("click", () => setFilters({ ...NO_FILTERS }, state.filters.cc !== "all"));
-$("country-button").addEventListener("click", () => { renderCountries(); $("countries").showModal(); });
+$("country-button").addEventListener("click", () => {
+  state.profile = state.filters.cc !== "all" ? state.filters.cc : null;      // the country shown on the map, if any
+  renderCountries();
+  $("countries").showModal();
+});
+
+// A country's profile (assets/country.js), for the whole country whatever the map's other filters.
+function showProfile() {
+  const code = state.profile;
+  if (!state.validation && state.manifest.files?.validation) {
+    state.validation = "loading";
+    getJSON("validation.json").then((v) => { state.validation = v; }).catch(() => { state.validation = { failed: true }; })
+      .finally(() => { if (state.profile && $("countries").open) showProfile(); });
+  }
+  const percent = (v) => v == null || Number.isNaN(v) ? "–" : new Intl.NumberFormat(locale(state.lang), { style: "percent",
+    maximumFractionDigits: v > 0 && v < 0.1 ? 1 : 0 }).format(v);
+  renderProfile($("country-profile"), {
+    code, country: nameOf(code), text: t(), locale: locale(state.lang), fmt, percent,
+    keys: state.stats.keys, col: state.col, groups: state.stats.groups, aggregate, median,
+    classes: state.manifest.classes, colours: CLASS_COLOURS, years: state.manifest.years, summary: state.summary,
+    quality: state.manifest.validation, validation: state.validation, validationPage: Boolean(state.manifest.files?.validation),
+    onBack: () => { state.profile = null; renderCountries(); $("countries").scrollTop = 0; },
+    onMap: () => { $("countries").close(); setFilters({ cc: code }, true); },
+  });
+}
 if (matchMedia("(min-width: 721px)").matches) $("filters").open = true;
 
 // ------------------------------------------------------------------ the evidence card
