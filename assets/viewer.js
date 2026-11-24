@@ -1,5 +1,5 @@
 // Satellite image viewer, one 2 km segment of coast at a time, read with HTTP range requests from a ZIP
-// archive (see `ceva frames`). Over each image: the detected waterline, the shoreline after the tide and
+// archive (see `ceva frames`), next to the site or on Zenodo. Over each image: the detected waterline, the shoreline after the tide and
 // wave correction, and the year's position. A segment's images are one H.264 video, image i at i / fps
 // seconds; seeking to the middle of an image's time lands on that exact image.
 // Used by the map's card (app.js) and by the full-page viewer (frames.js).
@@ -92,7 +92,13 @@ export class ImageArchive {
     return (await this.unit(unit)).byTransect.get(String(transectId)) || null;
   }
 
-  urlOf(seg) { return seg.archive ? new URL(seg.archive, this.indexUrl).href : this.url; }
+  // An archive's address: next to the index, or from the index's "archive_url" pattern, e.g.
+  // "https://zenodo.org/api/records/<id>/files/{archive}/content" for archives kept on Zenodo.
+  urlOf(seg) {
+    if (!seg.archive) return this.url;
+    const pattern = this.index.archive_url;
+    return new URL(pattern ? pattern.replace("{archive}", encodeURIComponent(seg.archive)) : seg.archive, this.indexUrl).href;
+  }
 
   async bytes(seg, [start, size]) {
     const response = await fetch(this.urlOf(seg), { headers: { Range: `bytes=${start}-${start + size - 1}` } });

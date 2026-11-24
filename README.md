@@ -4,8 +4,9 @@ A public map of how Europe's beaches have moved since 1984, transect by transect
 Sentinel-2 images corrected for tide and waves. It is a static site: precomputed files read straight
 from the host, no server, so it is free to host and fast everywhere.
 
-The data are made by CEVA 1.0.2 (`ceva publish`) and published on Zenodo ([doi:10.5281/zenodo.24493619](https://doi.org/10.5281/zenodo.24493619)); this repository shows them
-and is the project's public page.
+The data are made by CEVA 1.0.2 (`ceva publish`) and published on Zenodo ([doi:10.5281/zenodo.24493619](https://doi.org/10.5281/zenodo.24493619)), with the satellite
+images behind them ([doi:10.5281/zenodo.24500960](https://doi.org/10.5281/zenodo.24500960)); this repository shows
+them and is the project's public page.
 
 ## What is in it
 
@@ -22,7 +23,7 @@ and is the project's public page.
 | `data/refs/<unit>.json` | Where other products cover a transect: their rate, years and class, and CEVA's rate over the same years (the card's "Compared with other products") |
 | `data/validation.json` | The validation page's numbers and chart data; says whether the run was finished when it was made |
 | `assets/viewer.{js,css}`, `frames.html`, `assets/frames.{js,css}` | The satellite images behind the shorelines: in a transect's card (button under the chart; a click on the chart opens the images of a year, each image a dot), drawn in place on the map, or on a full page (`frames.html`). Over each image, the waterline CEVA detected (magenta, dashed), the shoreline after its tide and wave correction (red) and the year's position (black, dotted); or, with "Every year", the position of every year at once, coloured from dark blue (1984) to yellow (2025) with matplotlib's plasma colour map, the image's own year edged in white; pointing at a line, on the image or on the map, names its year. Reads a unit's index (`frames/units/<unit>.json`) when one of its transects is opened, then one segment's video and lines by HTTP range requests from its country's ZIP, local or on Zenodo. |
-| `frames/` | The image archive (one H.264 video and one JSON file per 2 km segment) and its index (`ceva frames`): not committed, too large for the repository; uploaded to its own Zenodo record. The map's cards link to the images when `index.html` names the index (`<meta name="ceva-images">`); remove that line where no images are published. |
+| `frames/` | The index of the image archive (`ceva frames pack`): `index.json` (the units with images) and `units/<unit>.json` (where each segment's video and lines start in its country's ZIP). The ZIPs themselves (22.5 GB) are on Zenodo; `archive_url` in `index.json` gives their address, and Zenodo's API serves byte ranges to other sites. The map's cards link to the images when `index.html` names the index (`<meta name="ceva-images">`); remove that line where no images are published. |
 | `tools/serve.py` | Local preview server (answers HTTP range requests, which PMTiles needs) |
 | `tools/check.py` | Headless-browser check: loads the site, opens a transect, switches language (French, Arabic, Chinese), filters the map, opens the summary by country, takes screenshots |
 | `.nojekyll` | Tells GitHub Pages to serve the files as they are |
