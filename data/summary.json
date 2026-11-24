@@ -1,0 +1,578 @@
+{
+ "all": {
+  "transects": 226771,
+  "rated": 226759,
+  "bounds": [
+   -31.2673,
+   27.6381,
+   29.7042,
+   65.8758
+  ],
+  "classes": {
+   "extreme_erosion": 2875,
+   "severe_erosion": 2260,
+   "intense_erosion": 10129,
+   "erosion": 16369,
+   "stable": 152471,
+   "accretion": 13096,
+   "intense_accretion": 14712,
+   "severe_accretion": 4556,
+   "extreme_accretion": 10291
+  },
+  "significant_erosion": 83036,
+  "significant_accretion": 61662,
+  "median_rate": -0.04
+ },
+ "countries": {
+  "AX": {
+   "name": "\u00c5land Islands",
+   "transects": 481,
+   "rated": 481,
+   "bounds": [
+    19.5324,
+    59.9368,
+    21.0009,
+    60.4334
+   ],
+   "classes": {
+    "extreme_erosion": 0,
+    "severe_erosion": 0,
+    "intense_erosion": 0,
+    "erosion": 1,
+    "stable": 343,
+    "accretion": 68,
+    "intense_accretion": 43,
+    "severe_accretion": 15,
+    "extreme_accretion": 11
+   },
+   "significant_erosion": 17,
+   "significant_accretion": 331,
+   "median_rate": 0.2
+  },
+  "BE": {
+   "name": "Belgium",
+   "transects": 617,
+   "rated": 617,
+   "bounds": [
+    2.545,
+    51.0911,
+    3.364,
+    51.3705
+   ],
+   "classes": {
+    "extreme_erosion": 0,
+    "severe_erosion": 2,
+    "intense_erosion": 5,
+    "erosion": 19,
+    "stable": 170,
+    "accretion": 190,
+    "intense_accretion": 185,
+    "severe_accretion": 25,
+    "extreme_accretion": 21
+   },
+   "significant_erosion": 41,
+   "significant_accretion": 459,
+   "median_rate": 0.78
+  },
+  "BG": {
+   "name": "Bulgaria",
+   "transects": 1746,
+   "rated": 1746,
+   "bounds": [
+    27.4468,
+    41.9828,
+    28.6092,
+    43.738
+   ],
+   "classes": {
+    "extreme_erosion": 0,
+    "severe_erosion": 0,
+    "intense_erosion": 2,
+    "erosion": 73,
+    "stable": 1483,
+    "accretion": 93,
+    "intense_accretion": 75,
+    "severe_accretion": 16,
+    "extreme_accretion": 4
+   },
+   "significant_erosion": 437,
+   "significant_accretion": 658,
+   "median_rate": 0.04
+  },
+  "DE": {
+   "name": "Germany",
+   "transects": 10232,
+   "rated": 10231,
+   "bounds": [
+    6.6439,
+    53.3326,
+    14.2252,
+    55.0591
+   ],
+   "classes": {
+    "extreme_erosion": 521,
+    "severe_erosion": 158,
+    "intense_erosion": 558,
+    "erosion": 892,
+    "stable": 6022,
+    "accretion": 754,
+    "intense_accretion": 630,
+    "severe_accretion": 198,
+    "extreme_accretion": 498
+   },
+   "significant_erosion": 4170,
+   "significant_accretion": 2965,
+   "median_rate": -0.07
+  },
+  "DK": {
+   "name": "Denmark",
+   "transects": 29111,
+   "rated": 29111,
+   "bounds": [
+    8.0718,
+    54.5596,
+    15.147,
+    57.7527
+   ],
+   "classes": {
+    "extreme_erosion": 232,
+    "severe_erosion": 341,
+    "intense_erosion": 1228,
+    "erosion": 1553,
+    "stable": 22588,
+    "accretion": 1302,
+    "intense_accretion": 1115,
+    "severe_accretion": 251,
+    "extreme_accretion": 501
+   },
+   "significant_erosion": 12492,
+   "significant_accretion": 7042,
+   "median_rate": -0.06
+  },
+  "EE": {
+   "name": "Estonia",
+   "transects": 8696,
+   "rated": 8696,
+   "bounds": [
+    21.7725,
+    57.7798,
+    28.0447,
+    59.6676
+   ],
+   "classes": {
+    "extreme_erosion": 10,
+    "severe_erosion": 31,
+    "intense_erosion": 127,
+    "erosion": 379,
+    "stable": 5969,
+    "accretion": 1002,
+    "intense_accretion": 863,
+    "severe_accretion": 149,
+    "extreme_accretion": 166
+   },
+   "significant_erosion": 2104,
+   "significant_accretion": 3531,
+   "median_rate": 0.07
+  },
+  "ES": {
+   "name": "Spain",
+   "transects": 22820,
+   "rated": 22820,
+   "bounds": [
+    -18.1607,
+    27.6381,
+    4.3118,
+    43.7472
+   ],
+   "classes": {
+    "extreme_erosion": 106,
+    "severe_erosion": 188,
+    "intense_erosion": 748,
+    "erosion": 1572,
+    "stable": 14520,
+    "accretion": 1388,
+    "intense_accretion": 1556,
+    "severe_accretion": 546,
+    "extreme_accretion": 2196
+   },
+   "significant_erosion": 6901,
+   "significant_accretion": 6926,
+   "median_rate": 0.0
+  },
+  "FI": {
+   "name": "Finland",
+   "transects": 2276,
+   "rated": 2276,
+   "bounds": [
+    20.7942,
+    59.8096,
+    27.7317,
+    65.7553
+   ],
+   "classes": {
+    "extreme_erosion": 6,
+    "severe_erosion": 8,
+    "intense_erosion": 54,
+    "erosion": 62,
+    "stable": 1427,
+    "accretion": 277,
+    "intense_accretion": 304,
+    "severe_accretion": 58,
+    "extreme_accretion": 80
+   },
+   "significant_erosion": 274,
+   "significant_accretion": 1135,
+   "median_rate": 0.18
+  },
+  "FR": {
+   "name": "France",
+   "transects": 25022,
+   "rated": 25016,
+   "bounds": [
+    -5.1422,
+    41.3681,
+    9.5601,
+    51.0907
+   ],
+   "classes": {
+    "extreme_erosion": 592,
+    "severe_erosion": 414,
+    "intense_erosion": 1953,
+    "erosion": 2670,
+    "stable": 15509,
+    "accretion": 1305,
+    "intense_accretion": 1216,
+    "severe_accretion": 452,
+    "extreme_accretion": 905
+   },
+   "significant_erosion": 7931,
+   "significant_accretion": 4472,
+   "median_rate": -0.1
+  },
+  "GR": {
+   "name": "Greece",
+   "transects": 34486,
+   "rated": 34486,
+   "bounds": [
+    19.4009,
+    34.7954,
+    29.5727,
+    41.006
+   ],
+   "classes": {
+    "extreme_erosion": 106,
+    "severe_erosion": 119,
+    "intense_erosion": 720,
+    "erosion": 2002,
+    "stable": 23449,
+    "accretion": 867,
+    "intense_accretion": 2366,
+    "severe_accretion": 1422,
+    "extreme_accretion": 3435
+   },
+   "significant_erosion": 17028,
+   "significant_accretion": 8633,
+   "median_rate": -0.08
+  },
+  "HR": {
+   "name": "Croatia",
+   "transects": 3294,
+   "rated": 3294,
+   "bounds": [
+    13.4903,
+    42.4206,
+    18.5156,
+    45.5052
+   ],
+   "classes": {
+    "extreme_erosion": 7,
+    "severe_erosion": 9,
+    "intense_erosion": 20,
+    "erosion": 108,
+    "stable": 2993,
+    "accretion": 80,
+    "intense_accretion": 49,
+    "severe_accretion": 9,
+    "extreme_accretion": 19
+   },
+   "significant_erosion": 1690,
+   "significant_accretion": 669,
+   "median_rate": -0.08
+  },
+  "IE": {
+   "name": "Ireland",
+   "transects": 16120,
+   "rated": 16117,
+   "bounds": [
+    -10.5566,
+    51.4944,
+    -5.9976,
+    55.3787
+   ],
+   "classes": {
+    "extreme_erosion": 226,
+    "severe_erosion": 123,
+    "intense_erosion": 672,
+    "erosion": 1038,
+    "stable": 12521,
+    "accretion": 571,
+    "intense_accretion": 565,
+    "severe_accretion": 177,
+    "extreme_accretion": 224
+   },
+   "significant_erosion": 3346,
+   "significant_accretion": 2104,
+   "median_rate": -0.04
+  },
+  "IT": {
+   "name": "Italy",
+   "transects": 32874,
+   "rated": 32874,
+   "bounds": [
+    7.5419,
+    35.5072,
+    18.5153,
+    45.7826
+   ],
+   "classes": {
+    "extreme_erosion": 223,
+    "severe_erosion": 252,
+    "intense_erosion": 1942,
+    "erosion": 3045,
+    "stable": 21108,
+    "accretion": 2388,
+    "intense_accretion": 2566,
+    "severe_accretion": 482,
+    "extreme_accretion": 868
+   },
+   "significant_erosion": 13949,
+   "significant_accretion": 9972,
+   "median_rate": -0.05
+  },
+  "LT": {
+   "name": "Lithuania",
+   "transects": 997,
+   "rated": 997,
+   "bounds": [
+    20.954,
+    55.278,
+    21.2488,
+    56.0686
+   ],
+   "classes": {
+    "extreme_erosion": 0,
+    "severe_erosion": 0,
+    "intense_erosion": 8,
+    "erosion": 65,
+    "stable": 830,
+    "accretion": 78,
+    "intense_accretion": 13,
+    "severe_accretion": 2,
+    "extreme_accretion": 1
+   },
+   "significant_erosion": 344,
+   "significant_accretion": 253,
+   "median_rate": -0.04
+  },
+  "LV": {
+   "name": "Latvia",
+   "transects": 4837,
+   "rated": 4837,
+   "bounds": [
+    20.9713,
+    56.0695,
+    24.4121,
+    57.8763
+   ],
+   "classes": {
+    "extreme_erosion": 2,
+    "severe_erosion": 3,
+    "intense_erosion": 359,
+    "erosion": 633,
+    "stable": 3130,
+    "accretion": 403,
+    "intense_accretion": 271,
+    "severe_accretion": 19,
+    "extreme_accretion": 17
+   },
+   "significant_erosion": 2143,
+   "significant_accretion": 1331,
+   "median_rate": -0.09
+  },
+  "MT": {
+   "name": "Malta",
+   "transects": 269,
+   "rated": 269,
+   "bounds": [
+    14.1845,
+    35.8219,
+    14.5727,
+    36.0815
+   ],
+   "classes": {
+    "extreme_erosion": 0,
+    "severe_erosion": 2,
+    "intense_erosion": 1,
+    "erosion": 16,
+    "stable": 242,
+    "accretion": 4,
+    "intense_accretion": 4,
+    "severe_accretion": 0,
+    "extreme_accretion": 0
+   },
+   "significant_erosion": 127,
+   "significant_accretion": 15,
+   "median_rate": -0.1
+  },
+  "NL": {
+   "name": "Netherlands",
+   "transects": 4970,
+   "rated": 4969,
+   "bounds": [
+    3.3658,
+    51.336,
+    7.0529,
+    53.5527
+   ],
+   "classes": {
+    "extreme_erosion": 381,
+    "severe_erosion": 115,
+    "intense_erosion": 231,
+    "erosion": 134,
+    "stable": 1330,
+    "accretion": 523,
+    "intense_accretion": 1058,
+    "severe_accretion": 341,
+    "extreme_accretion": 856
+   },
+   "significant_erosion": 708,
+   "significant_accretion": 2768,
+   "median_rate": 0.78
+  },
+  "PL": {
+   "name": "Poland",
+   "transects": 4368,
+   "rated": 4368,
+   "bounds": [
+    14.2266,
+    53.5931,
+    19.7324,
+    54.8362
+   ],
+   "classes": {
+    "extreme_erosion": 6,
+    "severe_erosion": 47,
+    "intense_erosion": 494,
+    "erosion": 685,
+    "stable": 2188,
+    "accretion": 451,
+    "intense_accretion": 413,
+    "severe_accretion": 45,
+    "extreme_accretion": 39
+   },
+   "significant_erosion": 1993,
+   "significant_accretion": 1294,
+   "median_rate": -0.14
+  },
+  "PT": {
+   "name": "Portugal",
+   "transects": 8979,
+   "rated": 8979,
+   "bounds": [
+    -31.2673,
+    30.1447,
+    -7.4102,
+    41.8653
+   ],
+   "classes": {
+    "extreme_erosion": 156,
+    "severe_erosion": 202,
+    "intense_erosion": 605,
+    "erosion": 1014,
+    "stable": 5199,
+    "accretion": 598,
+    "intense_accretion": 762,
+    "severe_accretion": 186,
+    "extreme_accretion": 257
+   },
+   "significant_erosion": 3243,
+   "significant_accretion": 2017,
+   "median_rate": -0.08
+  },
+  "RO": {
+   "name": "Romania",
+   "transects": 1482,
+   "rated": 1481,
+   "bounds": [
+    28.5514,
+    43.7389,
+    29.7042,
+    45.1667
+   ],
+   "classes": {
+    "extreme_erosion": 257,
+    "severe_erosion": 175,
+    "intense_erosion": 150,
+    "erosion": 60,
+    "stable": 371,
+    "accretion": 73,
+    "intense_accretion": 273,
+    "severe_accretion": 73,
+    "extreme_accretion": 49
+   },
+   "significant_erosion": 716,
+   "significant_accretion": 567,
+   "median_rate": -0.09
+  },
+  "SE": {
+   "name": "Sweden",
+   "transects": 13041,
+   "rated": 13041,
+   "bounds": [
+    11.0428,
+    55.3373,
+    23.9965,
+    65.8758
+   ],
+   "classes": {
+    "extreme_erosion": 44,
+    "severe_erosion": 71,
+    "intense_erosion": 252,
+    "erosion": 347,
+    "stable": 11033,
+    "accretion": 681,
+    "intense_accretion": 382,
+    "severe_accretion": 89,
+    "extreme_accretion": 142
+   },
+   "significant_erosion": 3368,
+   "significant_accretion": 4507,
+   "median_rate": 0.03
+  },
+  "SI": {
+   "name": "Slovenia",
+   "transects": 53,
+   "rated": 53,
+   "bounds": [
+    13.5751,
+    45.4946,
+    13.742,
+    45.591
+   ],
+   "classes": {
+    "extreme_erosion": 0,
+    "severe_erosion": 0,
+    "intense_erosion": 0,
+    "erosion": 1,
+    "stable": 46,
+    "accretion": 0,
+    "intense_accretion": 3,
+    "severe_accretion": 1,
+    "extreme_accretion": 2
+   },
+   "significant_erosion": 14,
+   "significant_accretion": 13,
+   "median_rate": 0.03
+  }
+ }
+}

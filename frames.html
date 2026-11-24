@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CEVA · Image viewer</title>
+  <meta name="description" content="The satellite images behind CEVA's shorelines: every image used, the waterline detected on it and the shoreline after the tide and wave correction.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.css" rel="stylesheet">
+  <link href="assets/frames.css" rel="stylesheet">
+  <link href="assets/viewer.css" rel="stylesheet">
+</head>
+<body>
+  <header class="page-head">
+    <a class="back" id="back" href="./">← Back to the map</a>
+    <h1>Image viewer <span class="tag">prototype</span></h1>
+    <label class="pick">Area <select id="area"></select></label>
+    <label class="pick">Segment <select id="segment"></select></label>
+  </header>
+
+  <main class="layout">
+    <section class="player" aria-label="Images of the segment">
+      <div id="viewer" class="viewer"></div>
+      <h2 class="chart-title" id="chart-title">Positions of the transect</h2>
+      <svg id="chart" class="chart" aria-label="Positions of the selected transect over time"></svg>
+      <p class="note">Click the chart to open the image nearest that date; click a line on the image to follow that transect. Dots: each image's corrected shoreline (grey: left out as an outlier). Line: the yearly positions.</p>
+      <p id="sizes" class="note sizes"></p>
+    </section>
+    <section class="map-box" aria-label="Map"><div id="map"></div></section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+  <script type="module" src="assets/frames.js"></script>
+</body>
+</html>

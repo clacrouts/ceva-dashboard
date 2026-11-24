@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CEVA · Europe's shorelines</title>
+  <meta name="description" content="How Europe's beaches have moved since 1984: shoreline positions from Landsat and Sentinel-2, corrected for tide and waves, transect by transect.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/uplot@1.6.30/dist/uPlot.min.css" rel="stylesheet">
+  <link href="assets/style.css" rel="stylesheet">
+  <link href="assets/viewer.css" rel="stylesheet">
+</head>
+<body>
+  <div id="map" role="region" aria-label="Map of shoreline change"></div>
+
+  <!-- left: what the map shows, the coast as a whole -->
+  <section class="panel" id="overview" aria-label="Overview">
+    <header class="brand">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M2 20c4 0 4-3 8-3s4 3 8 3 4-3 8-3 4 3 4 3v8H2z"/><path class="sand" d="M2 26c6-2 10-2 14-1s8 2 14 0v4H2z"/></svg>
+      <div>
+        <h1 data-i18n="title">Europe's shorelines</h1>
+        <p class="tagline" data-i18n="tagline">How beaches have moved since 1984, from satellite images</p>
+      </div>
+      <select id="lang" class="lang" aria-label="Language"></select>
+    </header>
+    <p id="preview" class="banner" hidden></p>
+
+    <div class="stats">
+      <p id="filtered" class="note filtered" hidden></p>
+      <div id="headline" class="headline"></div>
+      <div id="bar" class="bar" role="img"></div>
+      <p id="bar-note" class="note"></p>
+      <button id="country-button" class="ghost" data-i18n="byCountry">Summary by country</button>
+    </div>
+
+    <div class="row">
+      <label for="colour-by" class="label" data-i18n="colourBy">Colour by</label>
+      <select id="colour-by">
+        <option value="cls" data-i18n="byChange">Change since 1984</option>
+        <option value="shore" data-i18n="materialFilter">Material</option>
+        <option value="se" data-i18n="byPrecision">Precision</option>
+        <option value="smd" data-i18n="byMonitor">Difference with the Shoreline Monitor</option>
+      </select>
+    </div>
+    <div id="legend" class="legend" aria-live="polite"></div>
+
+    <details id="filters" class="filters">
+      <summary><span data-i18n="filters">Filters</span> <span id="filter-count" class="count" hidden></span></summary>
+      <div class="row">
+        <label for="f-country" class="label" data-i18n="country">Country</label>
+        <select id="f-country"></select>
+      </div>
+      <div class="row">
+        <label for="f-change" class="label" data-i18n="change">Change</label>
+        <select id="f-change"></select>
+      </div>
+      <div class="row">
+        <label for="f-coast" class="label" data-i18n="byCoast">Coastal type</label>
+        <select id="f-coast"></select>
+      </div>
+      <div class="row">
+        <label for="f-material" class="label" data-i18n="materialFilter">Material</label>
+        <select id="f-material"></select>
+      </div>
+      <div class="row">
+        <label for="f-shore" class="label" data-i18n="shoreFilter">Shore</label>
+        <select id="f-shore"></select>
+      </div>
+      <div class="row">
+        <label for="f-prec" class="label" data-i18n="byPrecision">Precision</label>
+        <select id="f-prec"></select>
+      </div>
+      <div class="row check">
+        <label><input type="checkbox" id="f-sig"> <span data-i18n="significantOnly">Significant trends only</span></label>
+        <button id="f-reset" class="ghost small" data-i18n="resetFilters" hidden>Reset filters</button>
+      </div>
+    </details>
+
+
+    <footer class="links">
+      <button id="about-button" class="ghost" data-i18n="howToRead">How to read this</button>
+      <a id="validation-link" href="validation.html" data-i18n="howCompares" hidden>How CEVA compares</a>
+      <a id="data-link" href="https://doi.org/10.5281/zenodo.24493619" data-i18n="data">Data</a>
+    </footer>
+  </section>
+
+  <!-- right: the evidence card of the selected transect -->
+  <aside class="panel hidden" id="card" aria-label="Selected transect" aria-live="polite">
+    <button id="card-close" class="ghost close" aria-label="Close">×</button>
+    <p class="eyebrow" id="card-place"></p>
+    <h2 id="card-rate"></h2>
+    <p id="card-ci" class="note ci" data-i18n="ciNote">± is the 95 % range of the trend.</p>
+    <p id="card-class" class="chip"></p>
+    <p id="card-text" class="summary"></p>
+    <div id="chart" class="chart"></div>
+    <div id="chart-keys" class="keys"></div>
+    <p class="note" id="chart-note" data-i18n="chartNote">Yearly position of the shoreline (metres, seaward up), relative to its average; the band is ± one standard error, the line the trend.</p>
+    <section id="card-images" class="card-images" hidden>
+      <div class="images-head">
+        <button id="images-toggle" class="images-link" type="button"></button>
+        <a id="images-page" class="images-page"></a>
+      </div>
+      <p id="images-hint" class="note"></p>
+      <div id="viewer" class="viewer" hidden></div>
+    </section>
+    <dl id="card-facts" class="facts"></dl>
+    <div id="card-refs" class="refs"></div>
+    <details class="caveats">
+      <summary data-i18n="caveatsTitle">What to keep in mind</summary>
+      <p id="caveats" data-i18n="caveats">Positions are satellite waterlines moved to mean sea level with the tide and the waves of each image. The standard error measures how precise a yearly position is, not how accurate: against surveys at six validation beaches, yearly positions were 8 to 39 m from the surveyed ones (root mean square). A trend over a few metres a year, or over many years, is more reliable than any single year.</p>
+    </details>
+    <p class="note mono" id="card-id"></p>
+  </aside>
+
+  <!-- summary by country -->
+  <dialog id="countries" class="wide">
+    <form method="dialog"><button class="ghost close" aria-label="Close">×</button></form>
+    <h2 data-i18n="byCountry">Summary by country</h2>
+    <p class="note" id="countries-intro"></p>
+    <div class="table-wrap"><table id="country-table" class="country-table"></table></div>
+  </dialog>
+
+  <!-- how to read this / about -->
+  <dialog id="about">
+    <form method="dialog"><button class="ghost close" aria-label="Close">×</button></form>
+    <div id="about-body"></div>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pmtiles@4.3.0/dist/pmtiles.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/uplot@1.6.30/dist/uPlot.iife.min.js"></script>
+  <script type="module" src="assets/app.js"></script>
+</body>
+</html>

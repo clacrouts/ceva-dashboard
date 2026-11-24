@@ -1,0 +1,104 @@
+{
+ "format": 1,
+ "generated": "2026-11-22T00:02:16+00:00",
+ "ceva_version": "1.0.2",
+ "method": "ceva",
+ "units": 1830,
+ "transects": 226771,
+ "years": [
+  1984,
+  2025
+ ],
+ "bounds": [
+  -31.2673,
+  27.6381,
+  29.7042,
+  65.8758
+ ],
+ "classes": [
+  "extreme_erosion",
+  "severe_erosion",
+  "intense_erosion",
+  "erosion",
+  "stable",
+  "accretion",
+  "intense_accretion",
+  "severe_accretion",
+  "extreme_accretion"
+ ],
+ "files": {
+  "tiles": "shoreline.pmtiles",
+  "series": "series/{unit}.json",
+  "summary": "summary.json",
+  "stats": "stats.json",
+  "refs": "refs/{unit}.json",
+  "validation": "validation.json"
+ },
+ "licence": "CC-BY-4.0",
+ "attribution": [
+  "Contains modified Copernicus Sentinel data (ESA / EU)",
+  "Landsat imagery courtesy of the U.S. Geological Survey (public domain)",
+  "Transects: Global Coastal Transect System, Calkoen et al. (2025), CC-BY-4.0",
+  "Coastal type and Shoreline Monitor rates: Global Coastal Typology, Calkoen et al. (2025), CC-BY-4.0",
+  "Tides: EOT20, Hart-Davis et al. (2021), CC-BY-4.0",
+  "Waves: ERA5, Hersbach et al. (2020), Copernicus Climate Change Service",
+  "Reference rates: EMODnet Geology, coastline migration from satellite data (Deltares), CC BY-SA 4.0",
+  "Reference classes: EMODnet Geology, coastline migration from field data, CC BY-SA 4.0"
+ ],
+ "provisional": false,
+ "references": [
+  {
+   "key": "sm",
+   "name": "Shoreline Monitor",
+   "provider": "Deltares",
+   "period": "1984-2023",
+   "coverage": "Every GCTS transect (100 m)",
+   "method": "Shorelines from yearly composite Landsat and Sentinel-2 images (method of Luijendijk et al. 2018); rate fitted over the years",
+   "kind": "satellite",
+   "licence": "CC-BY-4.0",
+   "url": "https://zenodo.org/records/15607678",
+   "citation": "Calkoen et al. (2025), Global Coastal Typology, Zenodo 15607678; Luijendijk et al. (2018), Sci. Rep. 8:6641",
+   "stable_m_yr": 0.5,
+   "match_m": 50.0
+  },
+  {
+   "key": "emodnet_sat",
+   "name": "EMODnet coastline migration (satellite)",
+   "provider": "EMODnet Geology, Deltares",
+   "period": "2007-2017",
+   "coverage": "Europe, transects every 500 m",
+   "method": "Shorelines from yearly composite Sentinel-2 and Landsat 5, 7 and 8 images; rate over the decade",
+   "kind": "satellite",
+   "licence": "CC-BY-SA-4.0",
+   "url": "https://emodnet.ec.europa.eu/geonetwork/srv/api/records/8fbb18deb12b8ea73a91e8a1141e4ea395142ac5",
+   "citation": "EMODnet Geology, coastline migration from satellite data",
+   "stable_m_yr": 0.5,
+   "match_m": 150.0
+  },
+  {
+   "key": "emodnet_field",
+   "name": "EMODnet coastline migration (field data)",
+   "provider": "EMODnet Geology",
+   "period": "varies by source",
+   "coverage": "Europe, coast segments",
+   "method": "National surveys and maps compiled by EMODnet partners, as landward migration, stable (within 0.5 m/yr) or seaward migration over each source's period",
+   "kind": "field",
+   "licence": "CC-BY-SA-4.0",
+   "url": "https://emodnet.ec.europa.eu/geonetwork/srv/api/records/a8a18774430c368ecb18350f9e3b1636ee71ce47",
+   "citation": "EMODnet Geology, coastline migration from field data",
+   "stable_m_yr": 0.5,
+   "match_m": 100.0
+  }
+ ],
+ "validation": {
+  "yearly_rmse": [
+   8.49,
+   40.04
+  ],
+  "rate_rmse": [
+   0.22,
+   0.95
+  ],
+  "sites": 6
+ }
+}
