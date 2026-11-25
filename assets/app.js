@@ -22,6 +22,13 @@ const SMD_NONE = "#e3e6e9";
 // chart series: CEVA positions, CEVA trend, then one colour per product
 const POSITION_COLOUR = "#2a78d6", TREND_COLOUR = "#eb6834";
 const REF_COLOURS = { sm: "#6250d6", emodnet_sat: "#e87ba4", emodnet_field: "#eda100" };
+// the coast not measured: other coast types dashed grey, sand or gravel without a result in ochre
+const NOT_MEASURED = "#7d8791", NO_RESULT = "#c9a13f";
+const COVERAGE_LAYERS = ["coverage", "coverage-none"];
+// the coastal vulnerability index by class (quartiles of the index): one hue, light (low) to dark (very high)
+const CVI_COLOURS = ["#b4b0d6", "#8d86c1", "#6a51a3", "#3f007d"];
+const CVI_NONE = "#e3e6e9";
+const CVI_VARIABLES = ["geomorphology", "shoreline_change", "coastal_slope", "sea_level", "waves", "tide"];
 
 // Filters: the change classes each choice keeps, and the precision bins (standard error of a yearly
 // position, m) as in stats.json.
@@ -88,6 +95,9 @@ function colourExpression() {
     return ["step", ["coalesce", ["get", "smd"], -999], SMD_NONE, -998, SMD_STEPS[0][1],
       ...SMD_STEPS.slice(0, -1).flatMap(([edge], i) => [edge, SMD_STEPS[i + 1][1]])];
   }
+  if (state.mode === "cvi") {
+    return ["match", ["coalesce", ["get", "cvic"], -1], ...CVI_COLOURS.flatMap((c, i) => [i, c]), CVI_NONE];
+  }
   return ["match", ["get", "cls"], ...Object.entries(CLASS_COLOURS).flat(), CLASS_COLOURS.insufficient_data];
 }
 
@@ -119,7 +129,31 @@ function restyle() {
   renderLegend();
 }
 
+// The coast of the area that the dataset does not measure (coverage.pmtiles), faint lines under the dots.
+function addCoverage() {
+  map.addSource("coverage", { type: "vector", url: `pmtiles://${DATA}${state.manifest.files.coverage}` });
+  const width = ["interpolate", ["linear"], ["zoom"], 3, 0.8, 8, 1.8, 12, 3.2];
+  map.addLayer({
+    id: "coverage", type: "line", source: "coverage", "source-layer": "coverage",
+    filter: ["!=", ["get", "why"], "no_result"], layout: { "line-join": "round" },
+    paint: { "line-color": NOT_MEASURED, "line-width": width, "line-opacity": 0.85, "line-dasharray": [2, 1.5] },
+  }, "dots");
+  map.addLayer({
+    id: "coverage-none", type: "line", source: "coverage", "source-layer": "coverage",
+    filter: ["==", ["get", "why"], "no_result"], layout: { "line-cap": "round", "line-join": "round" },
+    paint: { "line-color": NO_RESULT, "line-width": width, "line-opacity": 0.85 },
+  }, "dots");
+}
+
 const emptyCollection = () => ({ type: "FeatureCollection", features: [] });
+
+// The vulnerability colouring, offered when the publication has the index.
+function addVulnerabilityOption() {
+  if (!state.manifest.vulnerability || $("colour-by").querySelector('option[value="cvi"]')) return;
+  const option = Object.assign(document.createElement("option"), { value: "cvi" });
+  option.dataset.i18n = "byVulnerability";
+  $("colour-by").options[0].after(option);
+}
 
 // Room for the panels when the map frames an area: the overview on the side, or at the bottom on a phone.
 function fitPadding() {
@@ -144,6 +178,8 @@ map.on("load", async () => {
     const [w, s, e, n] = state.manifest.bounds;
     map.fitBounds([[w, s], [e, n]], { padding: fitPadding(), duration: 0 });
   }
+  if (state.manifest.files?.coverage) addCoverage();
+  addVulnerabilityOption();
   renderAll();
   // satellite images, when index.html points to an image archive (meta ceva-images)
   const images = document.querySelector('meta[name="ceva-images"]')?.content;
@@ -169,11 +205,33 @@ map.on("load", async () => {
 const hover = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 8 });
 map.on("mousemove", "dots", (event) => {
   map.getCanvas().style.cursor = "pointer";
-  const p = event.features[0].properties;
-  hover.setLngLat(event.lngLat).setText(`${t().classes[p.cls] || ""} · ${rateText(p)}`).addTo(map);
+  const p = event.features[0].properties, v = t().vulnerability;
+  const label = state.mode === "cvi" ? (p.cvic != null ? `${v.classes[p.cvic]} · ${v.index(fmt(p.cvi))}` : v.none)
+    : `${t().classes[p.cls] || ""} · ${rateText(p)}`;
+  hover.setLngLat(event.lngLat).setText(label).addTo(map);
 });
 map.on("mouseleave", "dots", () => { map.getCanvas().style.cursor = ""; hover.remove(); });
 map.on("click", "dots", (event) => select(event.features[0].properties));
+// A stretch of coast not measured says why, unless a measured transect is under the pointer too.
+const onDot = (event) => map.queryRenderedFeatures(event.point, { layers: ["dots"] }).length > 0;
+map.on("mousemove", COVERAGE_LAYERS, (event) => {
+  if (onDot(event)) return;
+  map.getCanvas().style.cursor = "pointer";
+  const c = t().coverage;
+  hover.setLngLat(event.lngLat).setText(`${c.title} · ${c.kinds[event.features[0].properties.why] || c.kinds.unknown}`)
+    .addTo(map);
+});
+map.on("mouseleave", COVERAGE_LAYERS, () => { map.getCanvas().style.cursor = ""; hover.remove(); });
+map.on("click", COVERAGE_LAYERS, (event) => {
+  if (onDot(event)) return;
+  const c = t().coverage, why = event.features[0].properties.why;
+  const box = document.createElement("div");
+  box.className = "coverage-popup";
+  box.append(Object.assign(document.createElement("strong"), { textContent: `${c.title} · ${c.kinds[why] || c.kinds.unknown}` }),
+    Object.assign(document.createElement("p"), { textContent: c.why[why] || c.why.unknown }));
+  hover.remove();
+  new maplibregl.Popup({ offset: 6, maxWidth: "300px" }).setLngLat(event.lngLat).setDOMContent(box).addTo(map);
+});
 
 // ------------------------------------------------------------------ overview panel
 function renderLegend() {
@@ -187,10 +245,19 @@ function renderLegend() {
   } else if (state.mode === "se") {
     legend.innerHTML = SE_STOPS.map(([v, c]) => `<span><i style="background:${c}"></i>${fmt(v, 0)} m</span>`).join("")
       + `<span class="faint">${t().precision(SE_STOPS[0][0], SE_STOPS.at(-1)[0])}</span>`;
+  } else if (state.mode === "cvi") {
+    const v = t().vulnerability, edges = state.manifest.vulnerability?.class_edges || [];
+    legend.innerHTML = CVI_COLOURS.map((c, i) => `<span><i style="background:${c}"></i>${v.classes[i]}</span>`).join("")
+      + `<span><i style="background:${CVI_NONE}"></i>${cap(v.none)}</span>`
+      + `<span class="faint">${v.legendNote(...edges.map((e) => fmt(e, 1)))}</span>`;
   } else {
     legend.innerHTML = state.manifest.classes.map((k) =>
       `<span title="${t().classRanges[k]}"><i style="background:${CLASS_COLOURS[k]}"></i>${t().classes[k]}</span>`).join("")
       + `<span class="faint">${t().faintNote}</span>`;
+  }
+  if (state.manifest?.files?.coverage) {                // the coast not measured, in every colouring
+    legend.insertAdjacentHTML("beforeend", `<span class="line-key"><i class="dashed" style="color:${NOT_MEASURED}"></i>${t().coverage.other}</span>`
+      + `<span class="line-key"><i style="background:${NO_RESULT}"></i>${t().coverage.noResult}</span>`);
   }
 }
 
@@ -452,6 +519,7 @@ function showProfile() {
     code, country: nameOf(code), text: t(), locale: locale(state.lang), fmt, percent,
     keys: state.stats.keys, col: state.col, groups: state.stats.groups, aggregate, median,
     classes: state.manifest.classes, colours: CLASS_COLOURS, years: state.manifest.years, summary: state.summary,
+    cvi: state.manifest.vulnerability ? { colours: CVI_COLOURS } : null,
     quality: state.manifest.validation, validation: state.validation, validationPage: Boolean(state.manifest.files?.validation),
     onBack: () => { state.profile = null; renderCountries(); $("countries").scrollTop = 0; },
     onMap: () => { $("countries").close(); setFilters({ cc: code }, true); },
@@ -529,6 +597,7 @@ function renderCard(p, series, refs = {}) {
   if (!state.manifest?.files?.refs) facts.push([text.monitor, p.sds == null ? "–" : text.rate(fmt(p.sds, 1, true))]);
   $("card-facts").innerHTML = facts.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
   $("card-id").textContent = `${text.transect} ${p.id}`;
+  renderVulnerability(p, series);
   renderRefs(refs);
   renderChart(series, refs);
 }
@@ -648,6 +717,36 @@ async function chartClick(u) {
   if (!(await openImages(seg, p.id, opening))) return;
   v.stop();
   if (target != null) await v.show(target); else await v.showYear(Math.round(x));
+}
+
+// The transect's coastal vulnerability index: its class, and the six ranks with the values behind them.
+function renderVulnerability(p, series) {
+  const box = $("card-vuln"), text = t(), v = text.vulnerability, vi = series?.vi;
+  if (!state.manifest?.vulnerability || !vi || p.cvic == null) { box.replaceChildren(); return; }
+  const el = (tag, props = {}, ...children) => { const node = Object.assign(document.createElement(tag), props);
+    node.append(...children); return node; };
+  const values = {
+    geomorphology: text.coasts[p.coast] ? cap(text.coasts[p.coast]) : "–",
+    shoreline_change: text.rate(fmt(p.rate, 1, true)),
+    coastal_slope: `${fmt(vi.slope, 2)} %`,
+    sea_level: v.seaLevel(fmt(vi.rsl, 1, true), fmt(vi.sl, 1, true), fmt(vi.vlm, 1, true)),
+    waves: `${fmt(vi.hs, 1)} m`,
+    tide: `${fmt(vi.tide, 1)} m`,
+  };
+  const chip = el("p", { className: "chip", textContent: `${v.classes[p.cvic]} · ${v.index(fmt(p.cvi))}` });
+  chip.style.background = CVI_COLOURS[p.cvic];
+  chip.style.color = p.cvic < 2 ? "#1c2530" : "#fff";
+  const rows = CVI_VARIABLES.map((key, i) => {
+    const rank = vi.r[i];
+    const meter = el("span", { className: "meter", title: v.rankOf(rank) },
+      ...[1, 2, 3, 4, 5].map((k) => el("i", { className: k <= rank ? "on" : "" })));
+    meter.setAttribute("role", "img");
+    meter.setAttribute("aria-label", v.rankOf(rank));
+    return el("tr", {}, el("th", { scope: "row", textContent: v.ranks[key] }), el("td", {}, meter),
+      el("td", { textContent: values[key] }));
+  });
+  box.replaceChildren(el("h3", { textContent: v.title }), chip, el("table", {}, el("tbody", {}, ...rows)),
+    el("p", { className: "note", textContent: v.note }));
 }
 
 // Other products at this transect: their rate and years, and CEVA's rate over the same years.

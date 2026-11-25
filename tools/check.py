@@ -1,6 +1,6 @@
 """Check the dashboard in headless Chromium: it loads, shows the coast, opens a transect, switches language
-(French, then Arabic right to left and Chinese), filters the map and opens the summary by country, and the
-validation page draws its charts.
+(French, then Arabic right to left and Chinese), colours the map by vulnerability (when published), filters
+the map and opens the summary by country, and the validation page draws its charts.
 
     python tools/serve.py 8000 &
     python tools/check.py http://localhost:8000/ screenshots
@@ -69,6 +69,15 @@ def main(url: str, out: str) -> int:
                 page.wait_for_function(IDLE, timeout=60000)
                 time.sleep(1)
                 page.screenshot(path=f"{out}/2b_monitor.png")
+            if page.evaluate("Boolean(window.ceva.state.manifest.vulnerability)"):
+                page.select_option("#colour-by", "cvi")
+                page.wait_for_function(IDLE, timeout=60000)
+                time.sleep(1)
+                print("vulnerability:", page.inner_text("#legend").split("\n")[-1])
+                if not page.is_visible("#card-vuln table") and page.evaluate("window.ceva.state.selected.cvic != null"):
+                    problems.append("the card does not show the vulnerability index")
+                page.screenshot(path=f"{out}/2c_vulnerability.png")
+                page.select_option("#colour-by", "cls")
         page.click("#about-button")
         time.sleep(0.5)
         page.screenshot(path=f"{out}/3_about.png")

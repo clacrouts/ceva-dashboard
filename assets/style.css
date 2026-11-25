@@ -27,14 +27,17 @@ html, body { margin: 0; height: 100%; background: #eef1f4; color: var(--ink); fo
 #overview { top: 12px; left: 12px; width: 330px; max-height: calc(100% - 24px); }
 #card { top: 12px; right: 12px; width: 400px; max-height: calc(100% - 24px); }
 
-.brand { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 12px; }
-.brand > div { flex: 1; }
+.brand { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0 10px; margin-bottom: 12px; }
+.brand-name { font-size: 26px; font-weight: 800; letter-spacing: 0.04em; color: var(--accent); line-height: 1; }
+.brand-long, .brand .tagline { grid-column: 1 / -1; }
+.brand-long { margin: 8px 0 0; font-size: 12px; font-weight: 600; color: var(--accent); line-height: 1.3; }
+[dir="rtl"] .brand-long { text-align: right; }
 .logo { width: 34px; height: 34px; flex: none; }
 .logo path { fill: var(--accent); }
 .logo path.sand { fill: #e2b955; }
 h1 { font-size: 18px; margin: 0; letter-spacing: -0.01em; }
 h2 { font-size: 26px; margin: 2px 0 6px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-.tagline { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+.tagline { margin: 3px 0 0; color: var(--muted); font-size: 13px; }
 .eyebrow { margin: 0; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; padding-inline-end: 28px; }
 
 .banner { background: var(--banner); border-radius: 10px; padding: 8px 12px; margin: 0 0 10px; font-size: 13px; }
@@ -54,6 +57,11 @@ button { font: inherit; cursor: pointer; }
 .legend span { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
 .legend i { width: 11px; height: 11px; border-radius: 50%; flex: none; border: 1px solid rgba(0, 0, 0, 0.12); }
 .legend .faint { grid-column: 1 / -1; font-size: 11px; }
+.legend .line-key { grid-column: 1 / -1; }
+.legend .line-key i { width: 16px; height: 3px; border-radius: 2px; border: none; }
+.legend .line-key i.dashed { background: repeating-linear-gradient(90deg, currentColor 0 4px, transparent 4px 7px); }
+.coverage-popup { max-width: 280px; font-size: 12px; line-height: 1.45; }
+.coverage-popup p { margin: 4px 0 0; color: var(--muted); }
 
 .stats { margin: 0 0 10px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
 .headline { font-size: 15px; margin: 6px 0 8px; }
@@ -87,6 +95,15 @@ button.images-link { border: none; cursor: pointer; font: inherit; font-size: 13
 .keys i { width: 16px; border-top: 2px solid; }
 .keys i.dash { border-top-style: dashed; }
 .refs h3 { font-size: 13px; margin: 12px 0 4px; color: var(--ink); }
+.vuln h3 { font-size: 13px; margin: 12px 0 6px; color: var(--ink); }
+.vuln table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
+.vuln th { text-align: start; color: var(--muted); font-weight: 500; padding: 3px 4px 3px 0; }
+.vuln td { padding: 3px 4px; }
+.vuln td:last-child { text-align: end; }
+.vuln th, .vuln td { border-bottom: 1px solid var(--line); }
+.meter { display: inline-flex; gap: 2px; vertical-align: middle; }
+.meter i { width: 9px; height: 9px; border-radius: 2px; background: #e3e6e9; }
+.meter i.on { background: #4a5563; }
 .refs table { width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums; }
 .refs th { text-align: start; color: var(--muted); font-weight: 500; padding: 2px 4px; border-bottom: 1px solid var(--line); }
 .refs td { padding: 3px 4px; border-bottom: 1px solid var(--line); }

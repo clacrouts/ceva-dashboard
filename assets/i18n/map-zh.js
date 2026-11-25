@@ -55,10 +55,36 @@ export default {
     smdLegend: ["CEVA：后退多于 1 米/年", "后退多 0.5 至 1 米/年", "±0.5 米/年以内",
       "前进多 0.5 至 1 米/年", "前进多于 1 米/年", "无 Shoreline Monitor 速率"],
     smdNote: "CEVA 的速率减去 Deltares Shoreline Monitor 的速率，均为 1984–2023 年。",
+    byVulnerability: "脆弱性指数",
+    vulnerability: {
+      title: "海岸脆弱性",
+      classes: ["低", "中", "高", "很高"],
+      none: "未计算",
+      index: (v) => `指数 ${v}`,
+      legendNote: (a, b, c) => `海岸脆弱性指数，按已发布海岸的四分位划分：低至 ${a}，中至 ${b}，高至 ${c}，以上为很高。`,
+      ranks: { geomorphology: "海岸地貌", shoreline_change: "岸线变化", coastal_slope: "区域坡度", sea_level: "相对海平面上升", waves: "平均波高", tide: "平均潮差" },
+      rankOf: (r) => `等级 ${r}/5`,
+      seaLevel: (rsl, sl, vlm) => `${rsl} 毫米/年（海面 ${sl}，陆地 ${vlm}）`,
+      note: "六个变量，各自从 1（脆弱性低）到 5（很高）分级，取其乘积除以六的平方根合成（美国地质调查局方法，Thieler 和 Hammar-Klose 1999）。各等级用于海岸之间的相互比较：这不是灾害或风险地图。",
+      profileLead: (here, all, m, mAll) => `此处 ${here} 的断面属于高或很高脆弱性（全欧洲为 ${all}）；指数中位数 ${m}（全欧洲为 ${mAll}）。`,
+      profileNote: "各等级是整个已发布海岸上指数的四分位，因此每级各占四分之一：它们用于海岸之间的相互比较。该指数综合了海岸地貌、岸线变化、区域坡度、相对海平面上升、波浪和潮汐。",
+    },
     howCompares: "CEVA 的对比验证",
+    method: "方法",
     refsTitle: "与其他产品比较",
     refsCols: ["", "年份", "产品", "CEVA（相同年份）"],
     refNames: { sm: "Shoreline Monitor", emodnet_sat: "EMODnet 卫星", emodnet_field: "EMODnet 实地数据" },
+    coverage: {
+      other: "未测量的海岸：岩石、崖岸、人工建筑或淤泥", noResult: "无法测得岸线的砂砾海岸", title: "未测量",
+      kinds: { rocky_shore_platform_or_large_boulders: "岩石海岸", no_sediment_or_shore_platform: "崖岸、岩石平台或人工建筑", muddy_sediments: "淤泥", unknown: "类型未知的海岸", no_result: "砂或砾石" },
+      why: {
+        rocky_shore_platform_or_large_boulders: "岩石或巨砾。CEVA 测量砂质和砾质海滩，其方法已在这类海滩上验证；在岩石海岸，从太空看到的水边线并不能反映海岸如何移动。",
+        no_sediment_or_shore_platform: "崖岸、岩石平台或人工建筑（港口、海堤）。CEVA 测量砂质和砾质海滩，其方法已在这类海滩上验证；在这些海岸，从太空看到的水边线并不能反映海岸如何移动（崖岸是从顶部后退的）。",
+        muddy_sediments: "盐沼或潮滩。其岸线是植被边缘，需要不同于 CEVA 在海滩上测量水边线的方法。",
+        unknown: "海岸类型数据在此处没有给出类型，因此 CEVA 未作测量。",
+        no_result: "无法测得岸线的砂质或砾质海岸：断面两端都是水（沙嘴、潟湖、比断面还窄的岛屿），或可用影像太少。",
+      },
+    },
     refsNone: "没有其他产品覆盖该断面。",
     refsNote: "CEVA 的速率按每个产品的年份重新拟合。",
     preview: (n, places) => `预览：目前共 ${n} 条断面（${places}）。欧盟其余海岸仍在处理中，将在未来几天内加入。`,
@@ -77,7 +103,10 @@ export default {
         <li>每条水边线根据影像拍摄时的潮汐（EOT20 模型）和波浪（ERA5）换算到平均海平面，海滩坡度由影像本身估算。</li>
         <li>年度位置是当年各水边线的中位数；趋势是对年度位置的直线拟合，并给出其 95% 区间。</li>
         <li>默认只处理沙质和砾石海岸：海岸线在这些地方移动，方法也在这些地方经过实测检验（法国、荷兰、英国和澳大利亚的六处海滩）。</li>
+        <li>逐步说明的方法及其代码：<a href="https://github.com/clacrouts/ceva#how-ceva-computes-the-metrics" target="_blank" rel="noopener">CEVA 软件</a>（开源）。</li>
       </ul>
+      <h3>海岸脆弱性</h3>
+      <p>将地图按<b>脆弱性指数</b>着色，可查看每条断面的海岸脆弱性指数（美国地质调查局方法，Thieler 和 Hammar-Klose 1999）：海岸地貌、岸线变化、区域坡度、相对海平面上升、波浪和潮汐六个变量，各自从 1 到 5 分级后合成。其四个等级是已发布海岸上指数的四分位：用于海岸之间的相互比较，并不衡量灾害或风险。断面卡片显示其六个等级及其依据的数值。</p>
       <h3>它不是什么</h3>
       <p>这不是官方的侵蚀地图。规划应以国家和地区观测机构的资料为准。这些位置基于开放卫星数据，提供一致的欧洲视角，并给出其不确定性。</p>
       <h3>来源与许可</h3>

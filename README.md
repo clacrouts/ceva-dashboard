@@ -1,25 +1,27 @@
-# CEVA dashboard: Europe's shorelines
+# CEVA (Coastal Erosion and Vulnerability Application): the dashboard
 
 A public map of how Europe's beaches have moved since 1984, transect by transect, from Landsat and
 Sentinel-2 images corrected for tide and waves. It is a static site: precomputed files read straight
 from the host, no server, so it is free to host and fast everywhere.
 
-The data are made by CEVA 1.0.2 (`ceva publish`) and published on Zenodo ([doi:10.5281/zenodo.24493619](https://doi.org/10.5281/zenodo.24493619)), with the satellite
-images behind them ([doi:10.5281/zenodo.24500960](https://doi.org/10.5281/zenodo.24500960)); this repository shows
-them and is the project's public page.
+The data are made by the [CEVA software](https://github.com/clacrouts/ceva) (`ceva publish`), whose README and
+step-by-step notebook describe how every metric is computed, and published on Zenodo
+([doi:10.5281/zenodo.24493619](https://doi.org/10.5281/zenodo.24493619)), with the satellite images behind them
+([doi:10.5281/zenodo.24500960](https://doi.org/10.5281/zenodo.24500960)). This repository shows them.
 
 ## What is in it
 
 | Path | What |
 |---|---|
 | `validation.html`, `assets/validation*.{js,css}` | How CEVA compares: against field surveys at six beaches (with the published algorithms of the SDS benchmark) and against the Shoreline Monitor and EMODnet's satellite and field data, with what CEVA adds and its limits; charts drawn from `data/validation.json` |
-| `index.html`, `assets/` | The site: [MapLibre GL JS](https://maplibre.org/) map, [PMTiles](https://protomaps.com/docs/pmtiles) vector tiles, [uPlot](https://github.com/leeoniya/uPlot) charts. Filters (country, change, coastal type, material, built-up or defended shore, precision, significant trends) act on the map and on the figures; a summary by country (sortable table) follows the filters, and each country opens its profile (how its coast has changed, where, and how far to trust the numbers there: field surveys, precision of the yearly positions, agreement with the other products, each against Europe as a whole; `assets/country.js`); each transect's card gives its rate ± half its 95 % range. Libraries load from jsDelivr at pinned versions; the basemap is [OpenFreeMap](https://openfreemap.org/) (OpenStreetMap data, no key). |
+| `index.html`, `assets/` | The site: [MapLibre GL JS](https://maplibre.org/) map, [PMTiles](https://protomaps.com/docs/pmtiles) vector tiles, [uPlot](https://github.com/leeoniya/uPlot) charts. Filters (country, change, coastal type, material, built-up or defended shore, precision, significant trends) act on the map and on the figures; a summary by country (sortable table) follows the filters, and each country opens its profile (how its coast has changed, where, and how far to trust the numbers there: field surveys, precision of the yearly positions, agreement with the other products, each against Europe as a whole; `assets/country.js`); each transect's card gives its rate ± half its 95 % range. When the publication has the coastal vulnerability index (`ceva vulnerability compute`), the map can be coloured by its class, the card shows the index with its six ranks and the values behind them, and the country profile compares its classes with the whole coast. Libraries load from jsDelivr at pinned versions; the basemap is [OpenFreeMap](https://openfreemap.org/) (OpenStreetMap data, no key). |
 | `assets/languages.js`, `assets/i18n/` | Ten languages: English, French, German, Spanish, Italian, Portuguese, Romanian, Chinese (simplified), Hindi and Arabic (right to left). One file per page and language (`map-<code>.js`, `report-<code>.js`), loaded when chosen; a missing text falls back to English. Numbers and country names follow the language (the browser's `Intl`). |
 | `data/manifest.json` | What was published: date, CEVA version, method, transects, years, extent, licence, attributions |
-| `data/summary.json` | Totals by change class, for all coasts and each country (the overview panel) |
+| `data/summary.json` | Totals by change class (and by vulnerability class, when published), for all coasts and each country (the overview panel) |
 | `data/stats.json` | The transects grouped by what the filters look at, with their rates (cm/yr): the filtered figures and the summary by country, exact for any choice of filters (about 0.4 MB, 0.2 MB compressed) |
+| `data/coverage.pmtiles` | The coast of the area that the data do not measure (`ceva publish --area`), as lines along it: other coast types (rock, cliffs and structures, mud; dashed grey) and sand or gravel where no shoreline could be measured (ochre). Pointing at one says why. |
 | `data/shoreline.pmtiles` | One point per transect at its latest shoreline position: rate of change (m/yr) and its 95 % range, change class (Luijendijk et al. 2018), precision, coastal type, built-up and defended shores, the Deltares Shoreline Monitor's rate |
-| `data/series/<unit>.json` | Yearly shoreline positions of the transects of one processing unit, fetched when one is clicked |
+| `data/series/<unit>.json` | Yearly shoreline positions of the transects of one processing unit, fetched when one is clicked, with the ranks and inputs of their vulnerability index |
 | `data/refs/<unit>.json` | Where other products cover a transect: their rate, years and class, and CEVA's rate over the same years (the card's "Compared with other products") |
 | `data/validation.json` | The validation page's numbers and chart data; says whether the run was finished when it was made |
 | `assets/viewer.{js,css}`, `frames.html`, `assets/frames.{js,css}` | The satellite images behind the shorelines: in a transect's card (button under the chart; a click on the chart opens the images of a year, each image a dot), drawn in place on the map, or on a full page (`frames.html`). Over each image, the waterline CEVA detected (magenta, dashed), the shoreline after its tide and wave correction (red) and the year's position (black, dotted); or, with "Every year", the position of every year at once, coloured from dark blue (1984) to yellow (2025) with matplotlib's plasma colour map, the image's own year edged in white; pointing at a line, on the image or on the map, names its year. Reads a unit's index (`frames/units/<unit>.json`) when one of its transects is opened, then one segment's video and lines by HTTP range requests from its country's ZIP, local or on Zenodo. |
@@ -34,6 +36,7 @@ From a CEVA checkout with processed units:
 
 ```bash
 ceva publish ../ceva-dashboard/data --run eu27-sand        # the finished units of a batch run
+ceva publish ../ceva-dashboard/data --run eu27-sand,europe-sand,mediterranean-sand --area europe-mediterranean   # several runs, and the coast not measured
 ceva publish ../ceva-dashboard/data --units truc_vert,...  # or named units and regions
 ceva publish ../ceva-dashboard/data --run eu27-sand --only @area.txt   # a preview: these finished units only
 ```

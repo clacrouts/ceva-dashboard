@@ -1,7 +1,7 @@
 {
  "format": 1,
- "generated": "2026-11-22T00:02:16+00:00",
- "ceva_version": "1.0.2",
+ "generated": "2026-11-25T10:26:24+00:00",
+ "ceva_version": "1.1.0",
  "method": "ceva",
  "units": 1830,
  "transects": 226771,
@@ -43,9 +43,40 @@
   "Tides: EOT20, Hart-Davis et al. (2021), CC-BY-4.0",
   "Waves: ERA5, Hersbach et al. (2020), Copernicus Climate Change Service",
   "Reference rates: EMODnet Geology, coastline migration from satellite data (Deltares), CC BY-SA 4.0",
-  "Reference classes: EMODnet Geology, coastline migration from field data, CC BY-SA 4.0"
+  "Reference classes: EMODnet Geology, coastline migration from field data, CC BY-SA 4.0",
+  "Terrain and bathymetry: GEBCO Compilation Group (2024), GEBCO 2024 Grid, doi:10.5285/1c44ce99-0a0d-5f4f-e063-7086abc0ea0f",
+  "Sea-level trends: E.U. Copernicus Marine Service Information (OMI_CLIMATE_SL_GLOBAL_regional_trends)",
+  "Glacial isostatic adjustment: ICE-6G_C (VM5a), Peltier et al. (2015), grids of Steffen (2021), CC-BY-4.0"
  ],
  "provisional": false,
+ "vulnerability": {
+  "transects": 226752,
+  "class_edges": [
+   8.660254037844387,
+   13.693063937629153,
+   22.360679774997898
+  ],
+  "classes": [
+   "low",
+   "moderate",
+   "high",
+   "very_high"
+  ],
+  "variables": [
+   "geomorphology",
+   "shoreline_change",
+   "coastal_slope",
+   "sea_level",
+   "waves",
+   "tide"
+  ],
+  "sources": {
+   "sea_level": "omi_climate_sl_global_regional_trends_19990220_P20261005.nc (Period : 1999-02-20 to 2026-05-15.)",
+   "gia": "ice6g_vm5a",
+   "bathymetry": "GEBCO_2024",
+   "tide_year": "2020"
+  }
+ },
  "references": [
   {
    "key": "sm",

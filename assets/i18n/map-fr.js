@@ -55,10 +55,36 @@ export default {
     smdLegend: ["CEVA : plus de 1 m/an de recul en plus", "0,5 à 1 m/an de recul en plus", "à ±0,5 m/an près", "0,5 à 1 m/an d'avancée en plus",
       "plus de 1 m/an d'avancée en plus", "pas de vitesse du Shoreline Monitor"],
     smdNote: "Vitesse de CEVA moins celle du Shoreline Monitor de Deltares, toutes deux sur 1984–2023.",
+    byVulnerability: "Indice de vulnérabilité",
+    vulnerability: {
+      title: "Vulnérabilité côtière",
+      classes: ["Faible", "Modérée", "Forte", "Très forte"],
+      none: "non calculé",
+      index: (v) => `indice ${v}`,
+      legendNote: (a, b, c) => `Indice de vulnérabilité côtière, par quart de la côte publiée : faible jusqu’à ${a}, modérée jusqu’à ${b}, forte jusqu’à ${c}, très forte au-delà.`,
+      ranks: { geomorphology: "Forme du littoral", shoreline_change: "Évolution du trait de côte", coastal_slope: "Pente régionale", sea_level: "Hausse relative du niveau marin", waves: "Hauteur moyenne des vagues", tide: "Marnage moyen" },
+      rankOf: (r) => `rang ${r} sur 5`,
+      seaLevel: (rsl, sl, vlm) => `${rsl} mm/an (mer ${sl}, sol ${vlm})`,
+      note: "Six variables, chacune classée de 1 (vulnérabilité faible) à 5 (très forte), combinées par la racine carrée de leur produit divisé par six (méthode de l’USGS, Thieler et Hammar-Klose 1999). Les classes comparent les côtes entre elles : ce n’est pas une carte d’aléa ni de risque.",
+      profileLead: (here, all, m, mAll) => `${here} des transects d’ici sont en vulnérabilité forte ou très forte (${all} en Europe) ; indice médian ${m} (${mAll} en Europe).`,
+      profileNote: "Les classes sont les quarts de l’indice sur toute la côte publiée, chacune en contient donc un quart : elles comparent les côtes entre elles. L’indice combine la forme du littoral, l’évolution du trait de côte, la pente régionale, la hausse relative du niveau marin, les vagues et la marée.",
+    },
     howCompares: "CEVA face aux autres données",
+    method: "Méthode",
     refsTitle: "Comparé aux autres produits",
     refsCols: ["", "Années", "Produit", "CEVA, mêmes années"],
     refNames: { sm: "Shoreline Monitor", emodnet_sat: "EMODnet satellite", emodnet_field: "EMODnet terrain" },
+    coverage: {
+      other: "Côte non mesurée : roche, falaises, ouvrages ou vase", noResult: "Sable ou galets sans trait de côte mesurable", title: "Non mesuré",
+      kinds: { rocky_shore_platform_or_large_boulders: "côte rocheuse", no_sediment_or_shore_platform: "falaise, platier ou ouvrage", muddy_sediments: "vase", unknown: "côte de type inconnu", no_result: "sable ou galets" },
+      why: {
+        rocky_shore_platform_or_large_boulders: "Roche ou blocs. CEVA mesure les plages de sable et de galets, où sa méthode est validée ; sur les côtes rocheuses, la ligne d'eau vue de l'espace ne montre pas comment la côte bouge.",
+        no_sediment_or_shore_platform: "Une falaise, un platier rocheux ou un ouvrage (port, digue). CEVA mesure les plages de sable et de galets, où sa méthode est validée ; sur ces côtes, la ligne d'eau vue de l'espace ne montre pas comment la côte bouge (une falaise recule par le haut).",
+        muddy_sediments: "Un marais ou une vasière. Son trait de côte est la limite de la végétation, qui demande une autre méthode que la ligne d'eau que CEVA mesure sur les plages.",
+        unknown: "La typologie côtière ne donne pas de type ici : CEVA ne le mesure donc pas.",
+        no_result: "Une côte de sable ou de galets où aucun trait de côte n'a pu être mesuré : les transects ont de l'eau aux deux bouts (flèche, lagune, île plus étroite qu'un transect) ou trop peu d'images utilisables.",
+      },
+    },
     refsNone: "Aucun autre produit ne couvre ce transect.",
     refsNote: "La vitesse de CEVA est recalculée sur les années de chaque produit.",
     preview: (n, places) => `Aperçu : ${n} transects pour l'instant (${places}). Les autres côtes de l'UE sont en cours de calcul et seront ajoutées dans les prochains jours.`,
@@ -77,7 +103,10 @@ export default {
         <li>Chaque ligne d'eau est ramenée au niveau moyen de la mer avec la marée au moment de l'image (modèle EOT20) et les vagues (ERA5), et la pente de la plage estimée à partir des images elles-mêmes.</li>
         <li>La position annuelle est la médiane des lignes d'eau de l'année ; la tendance est une droite ajustée sur les positions annuelles, avec son intervalle à 95 %.</li>
         <li>Seules les côtes de sable et de galets sont traitées par défaut : c'est là que le trait de côte bouge, et là que la méthode a été vérifiée sur des levés (six plages en France, aux Pays-Bas, au Royaume-Uni et en Australie).</li>
+        <li>La méthode pas à pas, et son code : le <a href="https://github.com/clacrouts/ceva#how-ceva-computes-the-metrics" target="_blank" rel="noopener">logiciel CEVA</a> (libre).</li>
       </ul>
+      <h3>Vulnérabilité côtière</h3>
+      <p>Colorez la carte par <b>Indice de vulnérabilité</b> pour voir l’indice de vulnérabilité côtière de chaque transect (méthode de l’USGS, Thieler et Hammar-Klose 1999) : six variables, la forme du littoral, l’évolution du trait de côte, la pente régionale, la hausse relative du niveau marin, les vagues et la marée, chacune classée de 1 à 5 puis combinées. Ses quatre classes sont les quarts de l’indice sur la côte publiée : elles comparent les côtes entre elles, elles ne mesurent ni un aléa ni un risque. La fiche d’un transect donne ses six rangs et les valeurs qui les fondent.</p>
       <h3>Ce que ce n'est pas</h3>
       <p>Pas une carte officielle de l'érosion. Les observatoires nationaux et régionaux font référence pour l'aménagement. Ces positions donnent une vue européenne cohérente à partir de données satellite ouvertes, avec leur incertitude.</p>
       <h3>Sources et licences</h3>

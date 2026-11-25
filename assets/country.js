@@ -230,6 +230,28 @@ export function renderProfile(box, ctx) {
     diverging(ctx, T.coastType, coastRows),
     diverging(ctx, T.shoreFilter, shoreRows));
 
+  // how vulnerable the coast is (summary.json), here and across the whole coast published
+  const vHere = ctx.summary.countries[ctx.code]?.vulnerability, vAll = ctx.summary.all?.vulnerability;
+  let vulnerable = null;
+  if (ctx.cvi && vHere?.known && vAll?.known) {
+    const V = T.vulnerability, colours = ctx.cvi.colours;
+    const shares = (b) => b.classes.map((c) => c / b.known);
+    const rows = [{ label: ctx.country, values: shares(vHere), b: vHere }, { label: P.europeRow, values: shares(vAll), b: vAll }];
+    const high = (row) => row.values[2] + row.values[3];
+    vulnerable = h("section", { class: "profile-section" },
+      h("h3", {}, V.title),
+      h("p", {}, V.profileLead(ctx.percent(high(rows[0])), ctx.percent(high(rows[1])), ctx.fmt(vHere.median, 1),
+        ctx.fmt(vAll.median, 1))),
+      stack(rows, colours, colours, (row, i) => [V.classes[i], `${row.label}: ${ctx.percent(row.values[i])}`,
+        P.transects(ctx.fmt(row.b.classes[i], 0), ctx.percent(row.values[i]))]),
+      legend(colours.map((c, i) => [c, V.classes[i]])),
+      h("details", { class: "twin" }, h("summary", {}, P.table),
+        h("table", {}, h("thead", {}, h("tr", {}, ["", ctx.country, P.europeRow].map((c) => h("th", {}, c)))),
+          h("tbody", {}, colours.map((_, i) => h("tr", {}, h("td", {}, V.classes[i]),
+            h("td", { class: "num" }, ctx.percent(rows[0].values[i])), h("td", { class: "num" }, ctx.percent(rows[1].values[i]))))))),
+      h("p", { class: "note" }, V.profileNote));
+  }
+
   // how far to trust the numbers here
   const trust = h("section", { class: "profile-section" }, h("h3", {}, P.trustTitle), h("p", {}, P.trustIntro));
   const v = ctx.validation;
@@ -267,7 +289,7 @@ export function renderProfile(box, ctx) {
     v.products.forEach((p) => trust.append(agreement(ctx, p, p.by?.country?.find((c) => c.key === english))));
   }
 
-  box.replaceChildren(nav, lead, changed, where, trust);
+  box.replaceChildren(...[nav, lead, changed, where, vulnerable, trust].filter(Boolean));
 }
 
 // A length in km to two significant figures (transects are 100 m apart: 25,022 transects, about 2,500 km).

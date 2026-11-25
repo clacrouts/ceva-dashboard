@@ -55,10 +55,36 @@ export default {
     smdLegend: ["CEVA: peste 1 m/an retragere în plus", "0,5 până la 1 m/an retragere în plus", "în ±0,5 m/an",
       "0,5 până la 1 m/an înaintare în plus", "peste 1 m/an înaintare în plus", "fără rată Shoreline Monitor"],
     smdNote: "Rata CEVA minus cea a Shoreline Monitor (Deltares), ambele pe 1984–2023.",
+    byVulnerability: "Indice de vulnerabilitate",
+    vulnerability: {
+      title: "Vulnerabilitate costieră",
+      classes: ["Scăzută", "Moderată", "Ridicată", "Foarte ridicată"],
+      none: "necalculat",
+      index: (v) => `indice ${v}`,
+      legendNote: (a, b, c) => `Indicele de vulnerabilitate costieră, pe sferturi ale coastei publicate: scăzută până la ${a}, moderată până la ${b}, ridicată până la ${c}, foarte ridicată peste.`,
+      ranks: { geomorphology: "Forma coastei", shoreline_change: "Evoluția liniei țărmului", coastal_slope: "Panta regională", sea_level: "Creșterea relativă a nivelului mării", waves: "Înălțimea medie a valurilor", tide: "Amplitudinea medie a mareei" },
+      rankOf: (r) => `treapta ${r} din 5`,
+      seaLevel: (rsl, sl, vlm) => `${rsl} mm/an (mare ${sl}, uscat ${vlm})`,
+      note: "Șase variabile, fiecare clasată de la 1 (vulnerabilitate scăzută) la 5 (foarte ridicată), combinate ca rădăcina pătrată a produsului lor împărțit la șase (metoda USGS, Thieler și Hammar-Klose 1999). Clasele compară coastele între ele: nu este o hartă de hazard sau de risc.",
+      profileLead: (here, all, m, mAll) => `${here} dintre transectele de aici au vulnerabilitate ridicată sau foarte ridicată (${all} în Europa); indice median ${m} (${mAll} în Europa).`,
+      profileNote: "Clasele sunt sferturile indicelui pe toată coasta publicată, deci fiecare conține un sfert din ea: compară coastele între ele. Indicele combină forma coastei, evoluția liniei țărmului, panta regională, creșterea relativă a nivelului mării, valurile și mareea.",
+    },
     howCompares: "CEVA în comparație",
+    method: "Metodă",
     refsTitle: "Comparat cu alte produse",
     refsCols: ["", "Ani", "Produs", "CEVA, aceiași ani"],
     refNames: { sm: "Shoreline Monitor", emodnet_sat: "EMODnet satelit", emodnet_field: "EMODnet teren" },
+    coverage: {
+      other: "Coastă nemăsurată: rocă, faleze, construcții sau mâl", noResult: "Nisip sau pietriș fără linie de țărm măsurabilă", title: "Nemăsurat",
+      kinds: { rocky_shore_platform_or_large_boulders: "țărm stâncos", no_sediment_or_shore_platform: "faleză, platformă stâncoasă sau construcție", muddy_sediments: "mâl", unknown: "coastă de tip necunoscut", no_result: "nisip sau pietriș" },
+      why: {
+        rocky_shore_platform_or_large_boulders: "Rocă sau blocuri. CEVA măsoară plajele de nisip și pietriș, unde metoda sa este validată; pe coastele stâncoase, linia apei văzută din spațiu nu arată cum se mișcă coasta.",
+        no_sediment_or_shore_platform: "O faleză, o platformă stâncoasă sau o construcție (port, dig). CEVA măsoară plajele de nisip și pietriș, unde metoda sa este validată; pe aceste coaste, linia apei văzută din spațiu nu arată cum se mișcă coasta (o faleză se retrage pe la partea de sus).",
+        muddy_sediments: "O mlaștină sau o zonă intertidală mâloasă. Linia sa de țărm este marginea vegetației, care cere o altă metodă decât linia apei pe care CEVA o măsoară pe plaje.",
+        unknown: "Tipologia costieră nu indică niciun tip aici, așa că CEVA nu o măsoară.",
+        no_result: "O coastă de nisip sau pietriș unde nu s-a putut măsura linia de țărm: transectele au apă la ambele capete (săgeată, lagună, insulă mai îngustă decât un transect) sau prea puține imagini utilizabile.",
+      },
+    },
     refsNone: "Niciun alt produs nu acoperă acest transect.",
     refsNote: "Rata CEVA este recalculată pe anii fiecărui produs.",
     preview: (n, places) => `Previzualizare: ${n} transecte până acum (${places}). Restul coastelor UE sunt în curs de calcul și vor fi adăugate în zilele următoare.`,
@@ -77,7 +103,10 @@ export default {
         <li>Fiecare linie a apei este adusă la nivelul mediu al mării cu mareea din momentul imaginii (modelul EOT20) și valurile (ERA5), cu panta plajei estimată din imaginile înseși.</li>
         <li>Poziția anuală este mediana liniilor de apă din acel an; tendința este o dreaptă ajustată pe pozițiile anuale, cu intervalul său de 95 %.</li>
         <li>Implicit sunt procesate doar coastele de nisip și pietriș: acolo se mișcă linia țărmului și acolo metoda a fost verificată cu măsurători (șase plaje din Franța, Țările de Jos, Regatul Unit și Australia).</li>
+        <li>Metoda pas cu pas și codul ei: <a href="https://github.com/clacrouts/ceva#how-ceva-computes-the-metrics" target="_blank" rel="noopener">software-ul CEVA</a> (cod deschis).</li>
       </ul>
+      <h3>Vulnerabilitate costieră</h3>
+      <p>Colorați harta după <b>Indice de vulnerabilitate</b> pentru a vedea indicele de vulnerabilitate costieră al fiecărui transect (metoda USGS, Thieler și Hammar-Klose 1999): șase variabile, forma coastei, evoluția liniei țărmului, panta regională, creșterea relativă a nivelului mării, valurile și mareea, fiecare clasată de la 1 la 5 și combinate. Cele patru clase ale sale sunt sferturile indicelui pe coasta publicată: compară coastele între ele, nu măsoară un hazard sau un risc. Fișa unui transect arată cele șase trepte și valorile pe care se bazează.</p>
       <h3>Ce nu este</h3>
       <p>Nu este o hartă oficială a eroziunii. Observatoarele naționale și regionale sunt referința pentru amenajare. Aceste poziții oferă o imagine europeană coerentă din date satelitare deschise, cu incertitudinea lor.</p>
       <h3>Surse și licențe</h3>

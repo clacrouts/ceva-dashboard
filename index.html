@@ -20,11 +20,11 @@
   <section class="panel" id="overview" aria-label="Overview">
     <header class="brand">
       <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><path d="M2 20c4 0 4-3 8-3s4 3 8 3 4-3 8-3 4 3 4 3v8H2z"/><path class="sand" d="M2 26c6-2 10-2 14-1s8 2 14 0v4H2z"/></svg>
-      <div>
-        <h1 data-i18n="title">Europe's shorelines</h1>
-        <p class="tagline" data-i18n="tagline">How beaches have moved since 1984, from satellite images</p>
-      </div>
+      <h1 class="brand-name" lang="en">CEVA</h1>
       <select id="lang" class="lang" aria-label="Language"></select>
+      <!-- the name stays in English in every language: it is what the letters stand for -->
+      <p class="brand-long" lang="en" dir="ltr">Coastal Erosion and Vulnerability Application</p>
+      <p class="tagline" data-i18n="tagline">How beaches have moved since 1984, from satellite images</p>
     </header>
     <p id="preview" class="banner" hidden></p>
 
@@ -84,6 +84,7 @@
       <button id="about-button" class="ghost" data-i18n="howToRead">How to read this</button>
       <a id="validation-link" href="validation.html" data-i18n="howCompares" hidden>How CEVA compares</a>
       <a id="data-link" href="https://doi.org/10.5281/zenodo.24493619" data-i18n="data">Data</a>
+      <a id="method-link" href="https://github.com/clacrouts/ceva#how-ceva-computes-the-metrics" data-i18n="method" target="_blank" rel="noopener">Method</a>
     </footer>
   </section>
 
@@ -107,6 +108,7 @@
       <div id="viewer" class="viewer" hidden></div>
     </section>
     <dl id="card-facts" class="facts"></dl>
+    <div id="card-vuln" class="vuln"></div>
     <div id="card-refs" class="refs"></div>
     <details class="caveats">
       <summary data-i18n="caveatsTitle">What to keep in mind</summary>

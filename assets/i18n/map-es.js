@@ -55,10 +55,36 @@ export default {
     smdLegend: ["CEVA: más de 1 m/año de retroceso adicional", "0,5 a 1 m/año de retroceso adicional", "dentro de ±0,5 m/año",
       "0,5 a 1 m/año de avance adicional", "más de 1 m/año de avance adicional", "sin tasa del Shoreline Monitor"],
     smdNote: "Tasa de CEVA menos la del Shoreline Monitor de Deltares, ambas en 1984–2023.",
+    byVulnerability: "Índice de vulnerabilidad",
+    vulnerability: {
+      title: "Vulnerabilidad costera",
+      classes: ["Baja", "Moderada", "Alta", "Muy alta"],
+      none: "no calculado",
+      index: (v) => `índice ${v}`,
+      legendNote: (a, b, c) => `Índice de vulnerabilidad costera, por cuartos de la costa publicada: baja hasta ${a}, moderada hasta ${b}, alta hasta ${c}, muy alta por encima.`,
+      ranks: { geomorphology: "Forma de la costa", shoreline_change: "Cambio de la línea de costa", coastal_slope: "Pendiente regional", sea_level: "Subida relativa del nivel del mar", waves: "Altura media del oleaje", tide: "Carrera media de marea" },
+      rankOf: (r) => `rango ${r} de 5`,
+      seaLevel: (rsl, sl, vlm) => `${rsl} mm/año (mar ${sl}, tierra ${vlm})`,
+      note: "Seis variables, cada una clasificada de 1 (vulnerabilidad baja) a 5 (muy alta), combinadas como la raíz cuadrada de su producto dividido entre seis (método del USGS, Thieler y Hammar-Klose 1999). Las clases comparan las costas entre sí: no es un mapa de peligro ni de riesgo.",
+      profileLead: (here, all, m, mAll) => `El ${here} de los transectos de aquí tiene vulnerabilidad alta o muy alta (${all} en Europa); índice mediano ${m} (${mAll} en Europa).`,
+      profileNote: "Las clases son los cuartos del índice sobre toda la costa publicada, así que cada una contiene una cuarta parte: comparan las costas entre sí. El índice combina la forma de la costa, el cambio de la línea de costa, la pendiente regional, la subida relativa del nivel del mar, el oleaje y la marea.",
+    },
     howCompares: "CEVA frente a otros datos",
+    method: "Método",
     refsTitle: "Comparado con otros productos",
     refsCols: ["", "Años", "Producto", "CEVA, mismos años"],
     refNames: { sm: "Shoreline Monitor", emodnet_sat: "EMODnet satélite", emodnet_field: "EMODnet campo" },
+    coverage: {
+      other: "Costa no medida: roca, acantilados, obras o fango", noResult: "Arena o grava sin línea de costa medible", title: "No medido",
+      kinds: { rocky_shore_platform_or_large_boulders: "costa rocosa", no_sediment_or_shore_platform: "acantilado, plataforma rocosa u obra", muddy_sediments: "fango", unknown: "costa de tipo desconocido", no_result: "arena o grava" },
+      why: {
+        rocky_shore_platform_or_large_boulders: "Roca o bloques. CEVA mide playas de arena y grava, donde su método está validado; en las costas rocosas, la línea de agua vista desde el espacio no muestra cómo se mueve la costa.",
+        no_sediment_or_shore_platform: "Un acantilado, una plataforma rocosa o una obra (puerto, dique). CEVA mide playas de arena y grava, donde su método está validado; en estas costas, la línea de agua vista desde el espacio no muestra cómo se mueve la costa (un acantilado retrocede por arriba).",
+        muddy_sediments: "Una marisma o una llanura de marea. Su línea de costa es el borde de la vegetación, que requiere otro método que la línea de agua que CEVA mide en las playas.",
+        unknown: "La tipología costera no da ningún tipo aquí, así que CEVA no la mide.",
+        no_result: "Una costa de arena o grava donde no se pudo medir la línea de costa: los transectos tienen agua en ambos extremos (flecha, laguna, isla más estrecha que un transecto) o muy pocas imágenes útiles.",
+      },
+    },
     refsNone: "Ningún otro producto cubre este transecto.",
     refsNote: "La tasa de CEVA se recalcula en los años de cada producto.",
     preview: (n, places) => `Vista previa: ${n} transectos por ahora (${places}). El resto de las costas de la UE se está procesando y se añadirá en los próximos días.`,
@@ -77,7 +103,10 @@ export default {
         <li>Cada línea de agua se lleva al nivel medio del mar con la marea en el momento de la imagen (modelo EOT20) y el oleaje (ERA5), con la pendiente de la playa estimada a partir de las propias imágenes.</li>
         <li>La posición anual es la mediana de las líneas de agua del año; la tendencia es una recta ajustada a las posiciones anuales, con su intervalo del 95 %.</li>
         <li>Por defecto solo se procesan las costas de arena y grava: es donde se mueve la línea de costa y donde el método se comprobó con levantamientos (seis playas en Francia, los Países Bajos, el Reino Unido y Australia).</li>
+        <li>El método paso a paso y su código: el <a href="https://github.com/clacrouts/ceva#how-ceva-computes-the-metrics" target="_blank" rel="noopener">software CEVA</a> (de código abierto).</li>
       </ul>
+      <h3>Vulnerabilidad costera</h3>
+      <p>Coloree el mapa por <b>Índice de vulnerabilidad</b> para ver el índice de vulnerabilidad costera de cada transecto (método del USGS, Thieler y Hammar-Klose 1999): seis variables, la forma de la costa, el cambio de la línea de costa, la pendiente regional, la subida relativa del nivel del mar, el oleaje y la marea, cada una clasificada de 1 a 5 y combinadas. Sus cuatro clases son los cuartos del índice sobre la costa publicada: comparan las costas entre sí, no miden un peligro ni un riesgo. La ficha de un transecto muestra sus seis rangos y los valores en que se basan.</p>
       <h3>Lo que no es</h3>
       <p>No es un mapa oficial de erosión. Los observatorios nacionales y regionales son la referencia para la planificación. Estas posiciones ofrecen una visión europea coherente a partir de datos de satélite abiertos, con su incertidumbre.</p>
       <h3>Fuentes y licencias</h3>

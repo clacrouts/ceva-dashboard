@@ -21,7 +21,17 @@
   },
   "significant_erosion": 83036,
   "significant_accretion": 61662,
-  "median_rate": -0.04
+  "median_rate": -0.04,
+  "vulnerability": {
+   "known": 226752,
+   "classes": [
+    66200,
+    52876,
+    62563,
+    45113
+   ],
+   "median": 13.69
+  }
  },
  "countries": {
   "AX": {
@@ -47,7 +57,17 @@
    },
    "significant_erosion": 17,
    "significant_accretion": 331,
-   "median_rate": 0.2
+   "median_rate": 0.2,
+   "vulnerability": {
+    "known": 481,
+    "classes": [
+     422,
+     59,
+     0,
+     0
+    ],
+    "median": 7.75
+   }
   },
   "BE": {
    "name": "Belgium",
@@ -72,7 +92,17 @@
    },
    "significant_erosion": 41,
    "significant_accretion": 459,
-   "median_rate": 0.78
+   "median_rate": 0.78,
+   "vulnerability": {
+    "known": 617,
+    "classes": [
+     0,
+     71,
+     308,
+     238
+    ],
+    "median": 21.21
+   }
   },
   "BG": {
    "name": "Bulgaria",
@@ -97,7 +127,17 @@
    },
    "significant_erosion": 437,
    "significant_accretion": 658,
-   "median_rate": 0.04
+   "median_rate": 0.04,
+   "vulnerability": {
+    "known": 1746,
+    "classes": [
+     1249,
+     407,
+     90,
+     0
+    ],
+    "median": 5.48
+   }
   },
   "DE": {
    "name": "Germany",
@@ -122,7 +162,17 @@
    },
    "significant_erosion": 4170,
    "significant_accretion": 2965,
-   "median_rate": -0.07
+   "median_rate": -0.07,
+   "vulnerability": {
+    "known": 10231,
+    "classes": [
+     249,
+     1493,
+     4437,
+     4052
+    ],
+    "median": 22.36
+   }
   },
   "DK": {
    "name": "Denmark",
@@ -147,7 +197,17 @@
    },
    "significant_erosion": 12492,
    "significant_accretion": 7042,
-   "median_rate": -0.06
+   "median_rate": -0.06,
+   "vulnerability": {
+    "known": 29111,
+    "classes": [
+     1424,
+     4447,
+     11490,
+     11750
+    ],
+    "median": 20.41
+   }
   },
   "EE": {
    "name": "Estonia",
@@ -172,7 +232,17 @@
    },
    "significant_erosion": 2104,
    "significant_accretion": 3531,
-   "median_rate": 0.07
+   "median_rate": 0.07,
+   "vulnerability": {
+    "known": 8696,
+    "classes": [
+     548,
+     1349,
+     4302,
+     2497
+    ],
+    "median": 20.0
+   }
   },
   "ES": {
    "name": "Spain",
@@ -197,7 +267,17 @@
    },
    "significant_erosion": 6901,
    "significant_accretion": 6926,
-   "median_rate": 0.0
+   "median_rate": 0.0,
+   "vulnerability": {
+    "known": 22819,
+    "classes": [
+     8837,
+     7586,
+     4772,
+     1624
+    ],
+    "median": 10.61
+   }
   },
   "FI": {
    "name": "Finland",
@@ -222,7 +302,17 @@
    },
    "significant_erosion": 274,
    "significant_accretion": 1135,
-   "median_rate": 0.18
+   "median_rate": 0.18,
+   "vulnerability": {
+    "known": 2276,
+    "classes": [
+     1411,
+     731,
+     131,
+     3
+    ],
+    "median": 7.91
+   }
   },
   "FR": {
    "name": "France",
@@ -247,7 +337,17 @@
    },
    "significant_erosion": 7931,
    "significant_accretion": 4472,
-   "median_rate": -0.1
+   "median_rate": -0.1,
+   "vulnerability": {
+    "known": 25010,
+    "classes": [
+     6254,
+     4891,
+     6556,
+     7309
+    ],
+    "median": 15.49
+   }
   },
   "GR": {
    "name": "Greece",
@@ -272,7 +372,17 @@
    },
    "significant_erosion": 17028,
    "significant_accretion": 8633,
-   "median_rate": -0.08
+   "median_rate": -0.08,
+   "vulnerability": {
+    "known": 34486,
+    "classes": [
+     21995,
+     8568,
+     3341,
+     582
+    ],
+    "median": 7.91
+   }
   },
   "HR": {
    "name": "Croatia",
@@ -297,7 +407,17 @@
    },
    "significant_erosion": 1690,
    "significant_accretion": 669,
-   "median_rate": -0.08
+   "median_rate": -0.08,
+   "vulnerability": {
+    "known": 3294,
+    "classes": [
+     1820,
+     1022,
+     450,
+     2
+    ],
+    "median": 8.66
+   }
   },
   "IE": {
    "name": "Ireland",
@@ -322,7 +442,17 @@
    },
    "significant_erosion": 3346,
    "significant_accretion": 2104,
-   "median_rate": -0.04
+   "median_rate": -0.04,
+   "vulnerability": {
+    "known": 16117,
+    "classes": [
+     5350,
+     3360,
+     4701,
+     2706
+    ],
+    "median": 12.25
+   }
   },
   "IT": {
    "name": "Italy",
@@ -347,7 +477,17 @@
    },
    "significant_erosion": 13949,
    "significant_accretion": 9972,
-   "median_rate": -0.05
+   "median_rate": -0.05,
+   "vulnerability": {
+    "known": 32874,
+    "classes": [
+     11051,
+     10620,
+     9009,
+     2194
+    ],
+    "median": 11.18
+   }
   },
   "LT": {
    "name": "Lithuania",
@@ -372,7 +512,17 @@
    },
    "significant_erosion": 344,
    "significant_accretion": 253,
-   "median_rate": -0.04
+   "median_rate": -0.04,
+   "vulnerability": {
+    "known": 997,
+    "classes": [
+     0,
+     0,
+     69,
+     928
+    ],
+    "median": 27.39
+   }
   },
   "LV": {
    "name": "Latvia",
@@ -397,7 +547,17 @@
    },
    "significant_erosion": 2143,
    "significant_accretion": 1331,
-   "median_rate": -0.09
+   "median_rate": -0.09,
+   "vulnerability": {
+    "known": 4837,
+    "classes": [
+     4,
+     106,
+     2541,
+     2186
+    ],
+    "median": 22.36
+   }
   },
   "MT": {
    "name": "Malta",
@@ -422,7 +582,17 @@
    },
    "significant_erosion": 127,
    "significant_accretion": 15,
-   "median_rate": -0.1
+   "median_rate": -0.1,
+   "vulnerability": {
+    "known": 269,
+    "classes": [
+     164,
+     77,
+     11,
+     17
+    ],
+    "median": 8.66
+   }
   },
   "NL": {
    "name": "Netherlands",
@@ -447,7 +617,17 @@
    },
    "significant_erosion": 708,
    "significant_accretion": 2768,
-   "median_rate": 0.78
+   "median_rate": 0.78,
+   "vulnerability": {
+    "known": 4969,
+    "classes": [
+     10,
+     557,
+     1857,
+     2545
+    ],
+    "median": 23.09
+   }
   },
   "PL": {
    "name": "Poland",
@@ -472,7 +652,17 @@
    },
    "significant_erosion": 1993,
    "significant_accretion": 1294,
-   "median_rate": -0.14
+   "median_rate": -0.14,
+   "vulnerability": {
+    "known": 4368,
+    "classes": [
+     107,
+     226,
+     1620,
+     2415
+    ],
+    "median": 25.0
+   }
   },
   "PT": {
    "name": "Portugal",
@@ -497,7 +687,17 @@
    },
    "significant_erosion": 3243,
    "significant_accretion": 2017,
-   "median_rate": -0.08
+   "median_rate": -0.08,
+   "vulnerability": {
+    "known": 8979,
+    "classes": [
+     1680,
+     3937,
+     1898,
+     1464
+    ],
+    "median": 12.25
+   }
   },
   "RO": {
    "name": "Romania",
@@ -522,7 +722,17 @@
    },
    "significant_erosion": 716,
    "significant_accretion": 567,
-   "median_rate": -0.09
+   "median_rate": -0.09,
+   "vulnerability": {
+    "known": 1481,
+    "classes": [
+     591,
+     639,
+     251,
+     0
+    ],
+    "median": 10.0
+   }
   },
   "SE": {
    "name": "Sweden",
@@ -547,7 +757,17 @@
    },
    "significant_erosion": 3368,
    "significant_accretion": 4507,
-   "median_rate": 0.03
+   "median_rate": 0.03,
+   "vulnerability": {
+    "known": 13041,
+    "classes": [
+     2993,
+     2718,
+     4729,
+     2601
+    ],
+    "median": 15.0
+   }
   },
   "SI": {
    "name": "Slovenia",
@@ -572,7 +792,17 @@
    },
    "significant_erosion": 14,
    "significant_accretion": 13,
-   "median_rate": 0.03
+   "median_rate": 0.03,
+   "vulnerability": {
+    "known": 53,
+    "classes": [
+     41,
+     12,
+     0,
+     0
+    ],
+    "median": 6.12
+   }
   }
  }
 }

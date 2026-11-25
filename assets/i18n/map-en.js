@@ -55,10 +55,36 @@ export default {
     smdLegend: ["CEVA: over 1 m/yr more retreat", "0.5 to 1 m/yr more retreat", "within ±0.5 m/yr", "0.5 to 1 m/yr more advance",
       "over 1 m/yr more advance", "no Shoreline Monitor rate"],
     smdNote: "CEVA's rate minus the Deltares Shoreline Monitor's, both over 1984–2023.",
+    byVulnerability: "Vulnerability index",
+    vulnerability: {
+      title: "Coastal vulnerability",
+      classes: ["Low", "Moderate", "High", "Very high"],
+      none: "not computed",
+      index: (v) => `index ${v}`,
+      legendNote: (a, b, c) => `Coastal vulnerability index, by quarter of the coast published: low up to ${a}, moderate up to ${b}, high up to ${c}, very high above.`,
+      ranks: { geomorphology: "Landform", shoreline_change: "Shoreline change", coastal_slope: "Regional slope", sea_level: "Relative sea-level rise", waves: "Mean wave height", tide: "Mean tidal range" },
+      rankOf: (r) => `rank ${r} of 5`,
+      seaLevel: (rsl, sl, vlm) => `${rsl} mm/yr (sea ${sl}, land ${vlm})`,
+      note: "Six variables, each ranked from 1 (low vulnerability) to 5 (very high), combined as the square root of their product divided by six (USGS method, Thieler and Hammar-Klose 1999). The classes compare coasts with each other: this is not a map of hazard or risk.",
+      profileLead: (here, all, m, mAll) => `${here} of the transects here are in the high or very high class of vulnerability (${all} across Europe); median index ${m} (${mAll} across Europe).`,
+      profileNote: "The classes are the quarters of the index over the whole coast published, so each holds a quarter of it: they compare coasts with each other. The index combines the landform, the shoreline change, the regional slope, the relative sea-level rise, the waves and the tide.",
+    },
     howCompares: "How CEVA compares",
+    method: "Method",
     refsTitle: "Compared with other products",
     refsCols: ["", "Years", "Product", "CEVA, same years"],
     refNames: { sm: "Shoreline Monitor", emodnet_sat: "EMODnet satellite", emodnet_field: "EMODnet field data" },
+    coverage: {
+      other: "Coast not measured: rock, cliffs, structures or mud", noResult: "Sand or gravel without a measurable shoreline", title: "Not measured",
+      kinds: { rocky_shore_platform_or_large_boulders: "rocky shore", no_sediment_or_shore_platform: "cliff, rock platform or structure", muddy_sediments: "mud", unknown: "coast of unknown type", no_result: "sand or gravel" },
+      why: {
+        rocky_shore_platform_or_large_boulders: "Rock or boulders. CEVA measures sand and gravel beaches, where its method is validated; on rocky coasts the waterline seen from space does not show how the coast moves.",
+        no_sediment_or_shore_platform: "A cliff, a rock platform or a built structure (harbour, sea wall). CEVA measures sand and gravel beaches, where its method is validated; on these coasts the waterline seen from space does not show how the coast moves (a cliff retreats at its top).",
+        muddy_sediments: "A marsh or a tidal flat. Its shoreline is the edge of the vegetation, which needs another method than the waterline CEVA measures on beaches.",
+        unknown: "The coastal typology gives no type here, so CEVA does not measure it.",
+        no_result: "A sand or gravel coast where no shoreline could be measured: the transects have water at both ends (a spit, a lagoon, an island narrower than a transect) or too few usable images.",
+      },
+    },
     refsNone: "No other product covers this transect.",
     refsNote: "CEVA's rate is refitted on each product's years.",
     preview: (n, places) => `Preview: ${n} transects so far (${places}). The rest of the EU's coasts is still being processed and will be added in the coming days.`,
@@ -77,7 +103,10 @@ export default {
         <li>Each waterline is moved to mean sea level using the tide at the time of the image (EOT20 model) and the waves (ERA5), with the beach slope estimated from the images themselves.</li>
         <li>A yearly position is the median of the year's waterlines; the trend is a straight-line fit through the yearly positions, with its 95 % range.</li>
         <li>Only sand and gravel coasts are processed by default: they are where shorelines move, and where the method was checked against surveys (six beaches in France, the Netherlands, the United Kingdom and Australia).</li>
+        <li>The method step by step, and its code: the <a href="https://github.com/clacrouts/ceva#how-ceva-computes-the-metrics" target="_blank" rel="noopener">CEVA software</a> (open source).</li>
       </ul>
+      <h3>Coastal vulnerability</h3>
+      <p>Colour the map by <b>Vulnerability index</b> to see the coastal vulnerability index of each transect (USGS method, Thieler and Hammar-Klose 1999): six variables, the landform, the shoreline change, the regional slope, the relative sea-level rise, the waves and the tide, each ranked from 1 to 5 and combined. Its four classes are the quarters of the index over the coast published: they compare coasts with each other, they do not measure a hazard or a risk. The card of a transect shows its six ranks and the values behind them.</p>
       <h3>What it is not</h3>
       <p>Not an official erosion map. National and regional observatories are the reference for planning. These positions are a consistent European view from open satellite data, with their uncertainty shown.</p>
       <h3>Sources and licences</h3>

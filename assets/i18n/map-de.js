@@ -55,10 +55,36 @@ export default {
     smdLegend: ["CEVA: über 1 m/Jahr mehr Rückgang", "0,5 bis 1 m/Jahr mehr Rückgang", "innerhalb ±0,5 m/Jahr",
       "0,5 bis 1 m/Jahr mehr Zuwachs", "über 1 m/Jahr mehr Zuwachs", "keine Rate des Shoreline Monitor"],
     smdNote: "Rate von CEVA minus die des Shoreline Monitor von Deltares, beide über 1984–2023.",
+    byVulnerability: "Vulnerabilitätsindex",
+    vulnerability: {
+      title: "Küstenvulnerabilität",
+      classes: ["Gering", "Mäßig", "Hoch", "Sehr hoch"],
+      none: "nicht berechnet",
+      index: (v) => `Index ${v}`,
+      legendNote: (a, b, c) => `Küstenvulnerabilitätsindex, nach Vierteln der veröffentlichten Küste: gering bis ${a}, mäßig bis ${b}, hoch bis ${c}, sehr hoch darüber.`,
+      ranks: { geomorphology: "Küstenform", shoreline_change: "Veränderung der Küstenlinie", coastal_slope: "Regionale Neigung", sea_level: "Relativer Meeresspiegelanstieg", waves: "Mittlere Wellenhöhe", tide: "Mittlerer Tidenhub" },
+      rankOf: (r) => `Rang ${r} von 5`,
+      seaLevel: (rsl, sl, vlm) => `${rsl} mm/Jahr (Meer ${sl}, Land ${vlm})`,
+      note: "Sechs Größen, jede von 1 (geringe Vulnerabilität) bis 5 (sehr hohe) eingestuft, kombiniert als Quadratwurzel ihres Produkts geteilt durch sechs (USGS-Methode, Thieler und Hammar-Klose 1999). Die Klassen vergleichen Küsten untereinander: Dies ist keine Gefahren- oder Risikokarte.",
+      profileLead: (here, all, m, mAll) => `${here} der Transekte hier haben eine hohe oder sehr hohe Vulnerabilität (${all} in Europa); Median des Index ${m} (${mAll} in Europa).`,
+      profileNote: "Die Klassen sind die Viertel des Index über die gesamte veröffentlichte Küste, jede enthält also ein Viertel davon: Sie vergleichen Küsten untereinander. Der Index verbindet Küstenform, Veränderung der Küstenlinie, regionale Neigung, relativen Meeresspiegelanstieg, Wellen und Gezeiten.",
+    },
     howCompares: "CEVA im Vergleich",
+    method: "Methode",
     refsTitle: "Verglichen mit anderen Produkten",
     refsCols: ["", "Jahre", "Produkt", "CEVA, gleiche Jahre"],
     refNames: { sm: "Shoreline Monitor", emodnet_sat: "EMODnet Satellit", emodnet_field: "EMODnet Felddaten" },
+    coverage: {
+      other: "Nicht gemessene Küste: Fels, Kliffs, Bauwerke oder Schlick", noResult: "Sand oder Kies ohne messbare Küstenlinie", title: "Nicht gemessen",
+      kinds: { rocky_shore_platform_or_large_boulders: "Felsküste", no_sediment_or_shore_platform: "Kliff, Felsplattform oder Bauwerk", muddy_sediments: "Schlick", unknown: "Küste unbekannten Typs", no_result: "Sand oder Kies" },
+      why: {
+        rocky_shore_platform_or_large_boulders: "Fels oder Blöcke. CEVA misst Sand- und Kiesstrände, wo seine Methode validiert ist; an Felsküsten zeigt die aus dem All gesehene Wasserlinie nicht, wie sich die Küste bewegt.",
+        no_sediment_or_shore_platform: "Ein Kliff, eine Felsplattform oder ein Bauwerk (Hafen, Deich). CEVA misst Sand- und Kiesstrände, wo seine Methode validiert ist; an diesen Küsten zeigt die aus dem All gesehene Wasserlinie nicht, wie sich die Küste bewegt (ein Kliff weicht an seiner Oberkante zurück).",
+        muddy_sediments: "Eine Salzwiese oder ein Watt. Seine Küstenlinie ist der Rand der Vegetation, der eine andere Methode braucht als die Wasserlinie, die CEVA an Stränden misst.",
+        unknown: "Die Küstentypologie nennt hier keinen Typ, daher misst CEVA ihn nicht.",
+        no_result: "Eine Sand- oder Kiesküste, an der keine Küstenlinie gemessen werden konnte: Die Transekte haben an beiden Enden Wasser (Nehrung, Lagune, Insel schmaler als ein Transekt) oder zu wenige nutzbare Bilder.",
+      },
+    },
     refsNone: "Kein anderes Produkt deckt dieses Transekt ab.",
     refsNote: "Die Rate von CEVA wird über die Jahre jedes Produkts neu berechnet.",
     preview: (n, places) => `Vorschau: bisher ${n} Transekte (${places}). Die übrigen Küsten der EU werden noch berechnet und in den nächsten Tagen ergänzt.`,
@@ -77,7 +103,10 @@ export default {
         <li>Jede Wasserlinie wird mit der Gezeit zum Aufnahmezeitpunkt (Modell EOT20) und dem Seegang (ERA5) auf das mittlere Meeresniveau umgerechnet; die Strandneigung wird aus den Bildern selbst geschätzt.</li>
         <li>Die jährliche Lage ist der Median der Wasserlinien des Jahres; der Trend ist eine Ausgleichsgerade durch die jährlichen Lagen, mit ihrem 95-%-Bereich.</li>
         <li>Standardmäßig werden nur Sand- und Kiesküsten berechnet: dort bewegt sich die Küstenlinie, und dort wurde die Methode an Vermessungen geprüft (sechs Strände in Frankreich, den Niederlanden, dem Vereinigten Königreich und Australien).</li>
+        <li>Die Methode Schritt für Schritt und ihr Code: die <a href="https://github.com/clacrouts/ceva#how-ceva-computes-the-metrics" target="_blank" rel="noopener">CEVA-Software</a> (Open Source).</li>
       </ul>
+      <h3>Küstenvulnerabilität</h3>
+      <p>Färben Sie die Karte nach <b>Vulnerabilitätsindex</b>, um den Küstenvulnerabilitätsindex jedes Transekts zu sehen (USGS-Methode, Thieler und Hammar-Klose 1999): sechs Größen, Küstenform, Veränderung der Küstenlinie, regionale Neigung, relativer Meeresspiegelanstieg, Wellen und Gezeiten, jede von 1 bis 5 eingestuft und kombiniert. Seine vier Klassen sind die Viertel des Index über die veröffentlichte Küste: Sie vergleichen Küsten untereinander und messen weder eine Gefahr noch ein Risiko. Die Karte eines Transekts zeigt seine sechs Ränge und die Werte dahinter.</p>
       <h3>Was sie nicht ist</h3>
       <p>Keine amtliche Erosionskarte. Für die Planung sind die nationalen und regionalen Beobachtungsstellen maßgeblich. Diese Lagen bieten einen einheitlichen europäischen Überblick aus offenen Satellitendaten, mit ihrer Unsicherheit.</p>
       <h3>Quellen und Lizenzen</h3>
