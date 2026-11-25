@@ -147,12 +147,15 @@ function addCoverage() {
 
 const emptyCollection = () => ({ type: "FeatureCollection", features: [] });
 
-// The vulnerability colouring, offered when the publication has the index.
+// The vulnerability colouring, offered when the publication has the index, and then the map's first view.
 function addVulnerabilityOption() {
   if (!state.manifest.vulnerability || $("colour-by").querySelector('option[value="cvi"]')) return;
   const option = Object.assign(document.createElement("option"), { value: "cvi" });
   option.dataset.i18n = "byVulnerability";
   $("colour-by").options[0].after(option);
+  state.mode = "cvi";
+  $("colour-by").value = "cvi";
+  restyle();
 }
 
 // Room for the panels when the map frames an area: the overview on the side, or at the bottom on a phone.
